@@ -2,7 +2,9 @@
   "name": "<%= _.slugify(appname) %>",
   "version": "0.0.0",
   "dependencies": {
-
+  	<% for (var i = 0, l = inuitModules.length; i < l; i++) { %>
+  		"inuit-<%= inuitModules[i] %>" : "latest"<% if (i < l - 1) { %>,<% } %>
+  	<% } %>
   }
 }
 
