@@ -4,6 +4,42 @@ var path = require('path');
 var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 
+var inuitModules = {
+  generic : [
+    'clearfix',
+    'normalize',
+    'reset',
+    'box-sizing',
+    'shared'
+  ],
+  base : {
+    'page',
+    'headings',
+    'paragraphs',
+    'lists',
+    'images'
+  },
+  objects : [
+    'tables',
+    'buttons',
+    'tabs',
+    'media',
+    'flag',
+    'block-list',
+    'box',
+    'ui-list',
+    'bare-list',
+    'layout'
+  ],
+  trumps : [
+    'spacing',
+    'widths'
+  ]
+};
+
+var plumpModules = {
+
+};
 
 var PlumpGenerator = yeoman.generators.Base.extend({
 
