@@ -72,8 +72,7 @@ var PlumpGenerator = yeoman.generators.Base.extend({
   },
 
   app: function () {
-    this.mkdir('app');
-    this.mkdir('app/templates');
+    this.mkdir('src');
 
     this.template('_package.json', 'package.json');
     this.template('_bower.json', 'bower.json');
