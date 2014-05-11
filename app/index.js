@@ -4,44 +4,37 @@ var path = require('path');
 var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 
-var inuitModules = {
-  generic : [
-    'clearfix',
-    'normalize',
-    'reset',
-    'box-sizing',
-    'shared'
-  ],
-  base : [
-    'page',
-    'headings',
-    'paragraphs',
-    'lists',
-    'images'
-  ],
-  objects : [
-    'tables',
-    'buttons',
-    'tabs',
-    'media',
-    'flag',
-    'block-list',
-    'box',
-    'ui-list',
-    'bare-list',
-    'layout'
-  ],
-  trumps : [
-    'spacing',
-    'widths'
-  ]
-};
+var inuitModules = [
+  'defaults',
+  'functions',
+  'mixins',
+  'normalize',
+  'reset',
+  'box-sizing',
+  'shared',
+  'clearfix',
+  'page',
+  'headings',
+  'paragraphs',
+  'lists',
+  'images',
+  'tables',
+  'layout',
+  'media',
+  'flag',
+  'box',
+  'tabs',
+  'buttons',
+  'bare-list',
+  'block-list',
+  'ui-list',
+  'spacing',
+  'widths'
+];
 
-var plumpModules = {
-  objects : [
+var plumpModules = [
 
-  ]
-};
+];
 
 var PlumpGenerator = yeoman.generators.Base.extend({
 
@@ -66,28 +59,13 @@ var PlumpGenerator = yeoman.generators.Base.extend({
 
     var prompts = [{
       type: 'checkbox',
-      name: 'inuitModulesBase',
-      message: 'Which base inuit modules do you require?',
-      choices : this._getModuleChoices(inuitModules.base)
-    }, {
-      type : 'checkbox',
-      name : 'inuitModulesObjects',
-      message : 'Which object inuit modules do you require?',
-      choices : this._getModuleChoices(inuitModules.objects)
-    }, {
-      type : 'checkbox',
-      name : 'inuitModulesTrumps',
-      message : 'Which trump inuit modules do you require?',
-      choices : this._getModuleChoices(inuitModules.trumps)
-    }, {
-      type : 'checkbox',
-      name : 'plumpModules',
-      message : 'Which Plump modules do you require?',
-      choices : this._getModuleChoices(plumpModules.objects)
+      name: 'inuitModules',
+      message: 'Which inuit modules do you require?',
+      choices : this._getModuleChoices(inuitModules)
     }];
 
     this.prompt(prompts, function (props) {
-      this.someOption = props.someOption;
+      this.inuitModules = props.inuitModules;
 
       done();
     }.bind(this));
