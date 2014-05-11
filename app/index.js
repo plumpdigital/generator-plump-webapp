@@ -12,13 +12,13 @@ var inuitModules = {
     'box-sizing',
     'shared'
   ],
-  base : {
+  base : [
     'page',
     'headings',
     'paragraphs',
     'lists',
     'images'
-  },
+  ],
   objects : [
     'tables',
     'buttons',
@@ -38,7 +38,9 @@ var inuitModules = {
 };
 
 var plumpModules = {
+  objects : [
 
+  ]
 };
 
 var PlumpGenerator = yeoman.generators.Base.extend({
@@ -60,13 +62,28 @@ var PlumpGenerator = yeoman.generators.Base.extend({
     this.log(this.yeoman);
 
     // replace it with a short and sweet description of your generator
-    this.log(chalk.magenta('You\'re using the fantastic Plump generator.'));
+    this.log(chalk.magenta('You\'re using the Plump web generator.'));
 
     var prompts = [{
-      type: 'confirm',
-      name: 'someOption',
-      message: 'Would you like to enable this option?',
-      default: true
+      type: 'checkbox',
+      name: 'inuitModulesBase',
+      message: 'Which base inuit modules do you require?',
+      choices : this._getModuleChoices(inuitModules.base)
+    }, {
+      type : 'checkbox',
+      name : 'inuitModulesObjects',
+      message : 'Which object inuit modules do you require?',
+      choices : this._getModuleChoices(inuitModules.objects)
+    }, {
+      type : 'checkbox',
+      name : 'inuitModulesTrumps',
+      message : 'Which trump inuit modules do you require?',
+      choices : this._getModuleChoices(inuitModules.trumps)
+    }, {
+      type : 'checkbox',
+      name : 'plumpModules',
+      message : 'Which Plump modules do you require?',
+      choices : this._getModuleChoices(plumpModules.objects)
     }];
 
     this.prompt(prompts, function (props) {
@@ -87,6 +104,15 @@ var PlumpGenerator = yeoman.generators.Base.extend({
   projectfiles: function () {
     this.copy('editorconfig', '.editorconfig');
     this.copy('jshintrc', '.jshintrc');
+  },
+
+  _getModuleChoices: function(modules) {
+    //create a choices array for use with checkbox prompt
+    var choices = [];
+    for (var i = 0; i < modules.length; i++) {
+      choices[i] = { name : modules[i] };
+    }
+    return choices;
   }
 
 });
