@@ -1,9 +1,11 @@
 'use strict';
+
 var util = require('util');
 var path = require('path');
 var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 
+//Bower inuit package options (prepended with inuit-)
 var inuitModules = [
   'defaults',
   'functions',
@@ -32,10 +34,15 @@ var inuitModules = [
   'widths'
 ];
 
+//Bower plump module options.
 var plumpModules = [
 
 ];
 
+/**
+ *    Yeoman generator class. Each method (not starting with _) is
+ *    executed in source order.
+ */
 var PlumpGenerator = yeoman.generators.Base.extend({
 
   init: function () {
@@ -48,8 +55,14 @@ var PlumpGenerator = yeoman.generators.Base.extend({
     });
   },
 
+  /**
+   *    Prompts for project configuration.
+   *
+   * 1. Create asynchronous callback to pause execution
+   *    until all the prompts are completed.
+   */
   askFor: function () {
-    var done = this.async();
+    var done = this.async(); /* [1] */
 
     // have Yeoman greet the user
     this.log(this.yeoman);
@@ -71,20 +84,36 @@ var PlumpGenerator = yeoman.generators.Base.extend({
     }.bind(this));
   },
 
+  /**
+   *    Create the app files.
+   *
+   * 1. Primary source directory is /src
+   * 2. Create NPM and Bower config. Using template rather than
+   *    copy runs the template through the Lo-Dash parser.
+   */
   app: function () {
-    this.mkdir('src');
+    this.mkdir('src'); /* [1] */
 
+    /* [2] */
     this.template('_package.json', 'package.json');
     this.template('_bower.json', 'bower.json');
   },
 
+  /**
+   *    Create additional app configuration files.
+   *
+   * 1. Editor config (http://editorconfig.org/)
+   * 2. JSHint config (http://www.jshint.com/docs/)
+   */ 
   projectfiles: function () {
-    this.copy('editorconfig', '.editorconfig');
-    this.copy('jshintrc', '.jshintrc');
+    this.copy('editorconfig', '.editorconfig'); /* [1] */
+    this.copy('jshintrc', '.jshintrc'); /* [2] */
   },
 
+  /**
+   *    Helper to create a choices array for checkbox prompts.
+   */
   _getModuleChoices: function(modules) {
-    //create a choices array for use with checkbox prompt
     var choices = [];
     for (var i = 0; i < modules.length; i++) {
       choices[i] = { name : modules[i] };
