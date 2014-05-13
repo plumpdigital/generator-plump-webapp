@@ -101,3 +101,29 @@ gulp.task('watch', function() {
 	gulp.watch('src/images/**/*', ['images']);		/* [3] */
 
 });
+
+/**
+ *    Serve task. Starts a server to serve both /dev and /dist
+ *    using ports 8000 and 9000, respectively.
+ */
+gulp.task('serve', function() {
+
+});
+
+/**
+ *    Develop task. Sets up watches and serves up /dev using
+ *    livereload.
+ *
+ * 1. Initial run of build.
+ */
+gulp.task('develop', function() {
+	gulp.start('build');
+
+	gulp.start('watch');
+});
+
+/**
+ *    Build task. Runs other tasks that produce a built project
+ *    in /dev and /dest.
+ */
+gulp.task('build', ['images', 'styles', 'scripts']);
