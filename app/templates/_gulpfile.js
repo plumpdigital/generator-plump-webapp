@@ -1,10 +1,10 @@
 
-var gulp = require('gulp');
+var gulp = require('gulp'),
+	gutil = require('gulp-util');
 
 //requires
 
-var http = require('http'),
-	ecstatic = require('ecstatic'),
+var express = require('express'),
 	open = require('open');
 
 //plugin requires
@@ -21,7 +21,9 @@ var concat       = require('gulp-concat'),
 	clean        = require('gulp-clean'),
 	livereload   = require('gulp-livereload');
 
-//constants
+/**
+ * Constants
+ */
 
 var DIST_SERVER_PORT = 9001;
 var DEV_SERVER_PORT = 9000;
@@ -113,6 +115,7 @@ gulp.task('copy', function() {
  * 1. Any changes to any .scss files starts styles task.
  * 2. Any changes to any .js files starts scripts task.
  * 3. Any changes to any files in images/ starts images task.
+ * 4. Any changes to files that just need copying starts copy task.
  */
 gulp.task('watch', function() {
 
@@ -122,23 +125,23 @@ gulp.task('watch', function() {
 
 	gulp.watch('src/images/**/*', ['images']); /* [3] */
 
+	gulp.watch('src/*.html', ['copy']); /* [4] */
+
 });
 
 /**
  *    Serve task. Starts a server to serve /dist statically.
  *
- * 1. See https://github.com/jesusabdullah/node-ecstatic/issues/108
- * 2. Listen on the port defined by the constant above.
- * 3. Open the new server URL in the default browser.
+ * 1. Listen on the port defined by the constant above.
+ * 2. Open the new server URL in the default browser.
  */
 gulp.task('serve', function() {
 
-	http.createServer(ecstatic({
-		root : __dirname + '/dist',
-		defaultExt : 'html' /* [1] */
-	})).listen(DIST_SERVER_PORT); /* [2] */
+	var server = express();
+	server.use(express.static(__dirname + '/dist'));
+	server.listen(DIST_SERVER_PORT); /* [1] */
 
-	open('http://localhost:' + DIST_SERVER_PORT); /* [3] */
+	open('http://localhost:' + DIST_SERVER_PORT); /* [2] */
 
 });
 
@@ -147,11 +150,31 @@ gulp.task('serve', function() {
  *    livereload.
  *
  * 1. Initial run of build.
+ * 2. LiveReload server listens on the port specified above.
+ * 3. Inform the LiveReload server of any change in /dev
+ * 4. Injects the LiveReload JS automatically.
+ * 5. Dev web server listens on the port specified above.
+ * 6. Automatically open the new server URL in the default browser.
  */
 gulp.task('develop', function() {
-	gulp.start('build');
+	gulp.start('build'); /* [1] */
 
 	gulp.start('watch');
+
+	var lr = livereload(LIVERELOAD_PORT);
+
+	gulp.watch('dev/**').on('change', function(file) { /* [3] */
+		lr.changed(file.path);
+	});
+
+	//start web server
+	var server = express();
+	server.use(require('connect-livereload')({ port : LIVERELOAD_PORT })); /* [4] */
+	server.use(express.static(__dirname + '/dev'));
+	server.listen(DEV_SERVER_PORT); /* [5] */
+
+	open('http://localhost:' + DEV_SERVER_PORT); /* [6] */
+
 });
 
 /**
@@ -159,3 +182,24 @@ gulp.task('develop', function() {
  *    in /dev and /dist.
  */
 gulp.task('build', ['images', 'styles', 'scripts', 'copy']);
+
+/**
+ * Default task. Lists out available tasks.
+ */
+gulp.task('default', function() {
+
+	var cyan = gutil.colors.cyan,
+		magenta = gutil.colors.magenta;
+
+	gutil.log(magenta('----------'));
+	gutil.log(magenta('Plump Gulp'));
+
+	gutil.log('The following tasks are available:');
+
+	gutil.log(cyan('build') + ' - builds the contents of src/ to both dev/ and dist/');
+	gutil.log(cyan('develop') + ' - performs an initial build, sets up watches and serves up a LiveReload enabled web server');
+	gutil.log(cyan('serve') + ' - serves the contents of /dist on a static web server');
+
+	gutil.log(magenta('----------'));
+
+});
