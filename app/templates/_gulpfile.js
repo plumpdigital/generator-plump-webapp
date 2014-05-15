@@ -4,7 +4,8 @@ var gulp = require('gulp');
 //requires
 
 var http = require('http'),
-	ecstatic = require('ecstatic');
+	ecstatic = require('ecstatic'),
+	open = require('open');
 
 //plugin requires
 
@@ -22,7 +23,9 @@ var concat       = require('gulp-concat'),
 
 //constants
 
-var STATIC_SERVER_PORT = 9000;
+var DIST_SERVER_PORT = 9001;
+var DEV_SERVER_PORT = 9000;
+var LIVERELOAD_PORT = 35729;
 
 /**
  *    Script build task. Combines and uglifies JS, producing
@@ -123,11 +126,19 @@ gulp.task('watch', function() {
 
 /**
  *    Serve task. Starts a server to serve /dist statically.
+ *
+ * 1. See https://github.com/jesusabdullah/node-ecstatic/issues/108
+ * 2. Listen on the port defined by the constant above.
+ * 3. Open the new server URL in the default browser.
  */
 gulp.task('serve', function() {
 
-	http.createServer(ecstatic({ root : __dirname + '/dist' })).listen(STATIC_SERVER_PORT);
+	http.createServer(ecstatic({
+		root : __dirname + '/dist',
+		defaultExt : 'html' /* [1] */
+	})).listen(DIST_SERVER_PORT); /* [2] */
 
+	open('http://localhost:' + DIST_SERVER_PORT); /* [3] */
 
 });
 
