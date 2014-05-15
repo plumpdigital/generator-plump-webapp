@@ -1,6 +1,11 @@
 
 var gulp = require('gulp');
 
+//requires
+
+var http = require('http'),
+	ecstatic = require('ecstatic');
+
 //plugin requires
 
 var concat       = require('gulp-concat'),
@@ -15,9 +20,13 @@ var concat       = require('gulp-concat'),
 	clean        = require('gulp-clean'),
 	livereload   = require('gulp-livereload');
 
+//constants
+
+var STATIC_SERVER_PORT = 9000;
+
 /**
  *    Script build task. Combines and uglifies JS, producing
- *    both a minified and non-minified version in dest/ and
+ *    both a minified and non-minified version in dist/ and
  *    dev/ respectively.
  * 
  * 1. Using all .js files in /src/js
@@ -29,12 +38,12 @@ var concat       = require('gulp-concat'),
  */
 gulp.task('scripts', function() {
 
-	return gulp.src('src/js/*.js')			/* [1] */
-		.pipe(concat('main.js'))			/* [2] */
-		.pipe(gulp.dest('dev/js'))			/* [3] */
-		.pipe(rename({ suffix : '.min' }))	/* [4] */
-		.pipe(uglify())						/* [5] */
-		.pipe(gulp.dest('dest/js'));		/* [6] */
+	return gulp.src('src/js/*.js') /* [1] */
+		.pipe(concat('main.js')) /* [2] */
+		.pipe(gulp.dest('dev/js')) /* [3] */
+		.pipe(rename({ suffix : '.min' })) /* [4] */
+		.pipe(uglify()) /* [5] */
+		.pipe(gulp.dest('dist/js')); /* [6] */
 
 });
 
@@ -53,18 +62,18 @@ gulp.task('scripts', function() {
  */
 gulp.task('styles', function() {
 
-	return gulp.src('src/styles/main.scss')		/* [1] */
-		.pipe(sass({ style : 'expanded' }))		/* [2] */
-		.pipe(autoprefixer('last 2 versions'))	/* [3] */
-		.pipe(gulp.dest('dev/css'))				/* [4] */
-		.pipe(rename({ suffix : '.min' }))		/* [5] */
-		.pipe(minifycss())						/* [6] */
-		.pipe(gulp.dest('dist/css'));			/* [7] */
+	return gulp.src('src/styles/main.scss') /* [1] */
+		.pipe(sass({ style : 'expanded' })) /* [2] */
+		.pipe(autoprefixer('last 2 versions')) /* [3] */
+		.pipe(gulp.dest('dev/css')) /* [4] */
+		.pipe(rename({ suffix : '.min' })) /* [5] */
+		.pipe(minifycss()) /* [6] */
+		.pipe(gulp.dest('dist/css')); /* [7] */
 
 });
 
 /**
- *    Image optimsation tast.
+ *    Image optimsation task.
  *
  * 1. Use any files in any subdirectory of src/images.
  * 2. Optimise, using cache to prevent re-optimising images
@@ -74,15 +83,25 @@ gulp.task('styles', function() {
  */
 gulp.task('images', function() {
 
-	return gulp.src('src/images/**/*')		/* [1] */
-		.pipe(cache(imagemin({				/* [2] */
+	return gulp.src('src/images/**/*') /* [1] */
+		.pipe(cache(imagemin({ /* [2] */
 			optimizationLevel : 3,
 			progressive : true,
 			interlaced : true
 		})))
-		.pipe(gulp.dest('dev/images'))		/* [3] */
-		.pipe(gulp.dest('build/images'));	/* [4] */
+		.pipe(gulp.dest('dev/images')) /* [3] */
+		.pipe(gulp.dest('build/images')); /* [4] */
 
+});
+
+/**
+ * Copy task. Copies over any files that are not part of other tasks
+ * (e.g. HTML pages) to both /dev and /dist
+ */
+gulp.task('copy', function() {
+	return gulp.src('src/*.html')
+		.pipe(gulp.dest('dev'))
+		.pipe(gulp.dest('dist'));
 });
 
 /**
@@ -96,17 +115,19 @@ gulp.task('watch', function() {
 
 	gulp.watch('src/styles/**/*.scss', ['styles']);	/* [1] */
 
-	gulp.watch('src/js/**/*.js', ['scripts']);		/* [2] */
+	gulp.watch('src/js/**/*.js', ['scripts']); /* [2] */
 
-	gulp.watch('src/images/**/*', ['images']);		/* [3] */
+	gulp.watch('src/images/**/*', ['images']); /* [3] */
 
 });
 
 /**
- *    Serve task. Starts a server to serve both /dev and /dist
- *    using ports 8000 and 9000, respectively.
+ *    Serve task. Starts a server to serve /dist statically.
  */
 gulp.task('serve', function() {
+
+	http.createServer(ecstatic({ root : __dirname + '/dist' })).listen(STATIC_SERVER_PORT);
+
 
 });
 
@@ -124,6 +145,6 @@ gulp.task('develop', function() {
 
 /**
  *    Build task. Runs other tasks that produce a built project
- *    in /dev and /dest.
+ *    in /dev and /dist.
  */
-gulp.task('build', ['images', 'styles', 'scripts']);
+gulp.task('build', ['images', 'styles', 'scripts', 'copy']);
