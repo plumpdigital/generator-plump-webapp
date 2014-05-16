@@ -35,7 +35,7 @@ var LIVERELOAD_PORT = 35729;
  *    both a minified and non-minified version in dist/ and
  *    dev/ respectively.
  * 
- * 1. Using all .js files in /src/js
+ * 1. Using all .js files in /src/scripts
  * 2. Combine into main.js
  * 3. Output development version to dev/js
  * 4. Rename to main.min.js
@@ -44,7 +44,7 @@ var LIVERELOAD_PORT = 35729;
  */
 gulp.task('scripts', function() {
 
-	return gulp.src('src/js/*.js') /* [1] */
+	return gulp.src('src/scripts/*.js') /* [1] */
 		.pipe(concat('main.js')) /* [2] */
 		.pipe(gulp.dest('dev/js')) /* [3] */
 		.pipe(rename({ suffix : '.min' })) /* [4] */
@@ -107,7 +107,7 @@ gulp.task('images', function() {
 			interlaced : true
 		})))
 		.pipe(gulp.dest('dev/images')) /* [3] */
-		.pipe(gulp.dest('build/images')); /* [4] */
+		.pipe(gulp.dest('dist/images')); /* [4] */
 
 });
 
@@ -134,7 +134,7 @@ gulp.task('watch', function() {
 
 	gulp.watch('src/styles/**/*.scss', ['styles']);	/* [1] */
 
-	gulp.watch('src/js/**/*.js', ['scripts']); /* [2] */
+	gulp.watch('src/scripts/**/*.js', ['scripts']); /* [2] */
 
 	gulp.watch('src/images/**/*', ['images']); /* [3] */
 
