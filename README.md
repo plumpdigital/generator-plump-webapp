@@ -1,7 +1,5 @@
-# generator-plump [![Build Status](https://secure.travis-ci.org/jameshoward/generator-plump.png?branch=master)](https://travis-ci.org/jameshoward/generator-plump)
 
-> [Yeoman](http://yeoman.io) generator
-
+> Plump [Yeoman](http://yeoman.io) generator
 
 ## Getting Started
 
@@ -26,13 +24,13 @@ Yeoman travels light. He didn't pack any generators when he moved in. You can th
 To install generator-plump from npm, run:
 
 ```
-$ npm install -g generator-plump
+$ npm install -g generator-plump-webapp
 ```
 
 Finally, initiate the generator:
 
 ```
-$ yo plump
+$ yo plump-webapp
 ```
 
 ### Getting To Know Yeoman
