@@ -128,7 +128,7 @@ gulp.task('copy', function() {
  * 1. Any changes to any .scss files starts styles task.
  * 2. Any changes to any .js files starts scripts task.
  * 3. Any changes to any files in images/ starts images task.
- * 4. Any changes to files that just need copying starts copy task.
+ * 4. Any changes to html files or templates starts templates task.
  */
 gulp.task('watch', function() {
 
@@ -138,7 +138,7 @@ gulp.task('watch', function() {
 
 	gulp.watch('src/images/**/*', ['images']); /* [3] */
 
-	gulp.watch('src/*.html', ['copy']); /* [4] */
+	gulp.watch('src/**/*.html', ['templates']); /* [4] */
 
 });
 
