@@ -90,7 +90,7 @@ gulp.task('templates', function() {
 });
 
 /**
- *    Image optimsation task.
+ *    Image optimisation task.
  *
  * 1. Use any files in any subdirectory of src/images.
  * 2. Optimise, using cache to prevent re-optimising images
@@ -209,9 +209,9 @@ gulp.task('default', function() {
 
 	gutil.log('The following tasks are available:');
 
-	gutil.log(cyan('build') + ' - builds the contents of src/ to both dev/ and dist/');
-	gutil.log(cyan('develop') + ' - performs an initial build, sets up watches and serves up a LiveReload enabled web server');
-	gutil.log(cyan('serve') + ' - serves the contents of /dist on a static web server');
+	gutil.log(cyan('build') + ': builds the contents of src/ to both dev/ and dist/');
+	gutil.log(cyan('develop') + ': performs an initial build, sets up watches and serves up a LiveReload enabled web server');
+	gutil.log(cyan('serve') + ': serves the contents of /dist on a static web server');
 
 	gutil.log(magenta('----------'));
 
