@@ -1,6 +1,6 @@
 
 var gulp = require('gulp'),
-	gutil = require('gulp-util'),
+	gutil = require('gulp-util');
 
 //requires
 
