@@ -13,6 +13,7 @@ var concat       = require('gulp-concat'),
 	uglify       = require('gulp-uglify'),
 	jshint       = require('gulp-jshint'),
 	rename       = require('gulp-rename'),
+	swig         = require('gulp-swig'),
 	sass         = require('gulp-ruby-sass'),
 	autoprefixer = require('gulp-autoprefixer'),
 	minifycss    = require('gulp-minify-css'),
@@ -78,6 +79,17 @@ gulp.task('styles', function() {
 });
 
 /**
+ *    Template rendering tasks. Compiles Swig template into HTML
+ *    in /dev and /dist
+ */
+gulp.task('templates', function() {
+	return gulp.src('src/*.html')
+		.pipe(swig())
+		.pipe(gulp.dest('dev/'))
+		.pipe(gulp.dest('dist/'));
+});
+
+/**
  *    Image optimsation task.
  *
  * 1. Use any files in any subdirectory of src/images.
@@ -104,9 +116,10 @@ gulp.task('images', function() {
  * (e.g. HTML pages) to both /dev and /dist
  */
 gulp.task('copy', function() {
-	return gulp.src('src/*.html')
+	/* populate this task with any extra files you need to copy */
+	/*return gulp.src('src/*.html')
 		.pipe(gulp.dest('dev'))
-		.pipe(gulp.dest('dist'));
+		.pipe(gulp.dest('dist'));*/
 });
 
 /**
@@ -181,7 +194,7 @@ gulp.task('develop', function() {
  *    Build task. Runs other tasks that produce a built project
  *    in /dev and /dist.
  */
-gulp.task('build', ['images', 'styles', 'scripts', 'copy']);
+gulp.task('build', ['images', 'templates', 'styles', 'scripts', 'copy']);
 
 /**
  * Default task. Lists out available tasks.
