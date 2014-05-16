@@ -3,11 +3,11 @@
   "version": "0.0.0",
   "description": "Plump Yeoman generator for HTML/CSS/JS using Inuit",
   "license": "MIT",
-  "repository": "jameshoward/generator-plump",
+  "repository": "plumpdigital/generator-plump-webapp",
   "author": {
     "name": "James Howard",
     "email": "james@plumpdigital.co.uk",
-    "url": "https://github.com/jameshoward"
+    "url": "https://github.com/plumpdigital"
   },
   "engines": {
     "node": ">=0.10.0"
