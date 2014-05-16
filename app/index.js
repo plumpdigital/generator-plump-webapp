@@ -97,6 +97,7 @@ var PlumpGenerator = yeoman.generators.Base.extend({
     /* [2] */
     this.template('_package.json', 'package.json');
     this.template('_bower.json', 'bower.json');
+
   },
 
   /**
@@ -104,12 +105,14 @@ var PlumpGenerator = yeoman.generators.Base.extend({
    *
    * 1. Editor config (http://editorconfig.org/)
    * 2. JSHint config (http://www.jshint.com/docs/)
+   * 3. Basic .gitignore to ignore NPM and Bower components.
    */ 
   projectfiles: function () {
     this.copy('editorconfig', '.editorconfig'); /* [1] */
     this.copy('jshintrc', '.jshintrc'); /* [2] */
+    this.copy('gitignore', '.gitignore'); /* [3] */
 
-    this.copy('_gulpfile.js', 'gulpfile.js');
+    this.copy('gulpfile.js', 'gulpfile.js');
   },
 
   /**
