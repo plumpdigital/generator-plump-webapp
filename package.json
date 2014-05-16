@@ -1,9 +1,8 @@
 {
-  "name": "generator-plump",
+  "name": "generator-plump-webapp",
   "version": "0.0.0",
-  "description": "Yeoman generator",
+  "description": "Plump Yeoman generator for HTML/CSS/JS using Inuit",
   "license": "MIT",
-  "main": "app/index.js",
   "repository": "jameshoward/generator-plump",
   "author": {
     "name": "James Howard",
