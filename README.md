@@ -1,5 +1,5 @@
 
-> Plump [Yeoman](http://yeoman.io) generator
+# Plump [Yeoman](http://yeoman.io) generator
 
 ## Getting Started
 
