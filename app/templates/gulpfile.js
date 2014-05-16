@@ -1,7 +1,6 @@
 
 var gulp = require('gulp'),
 	gutil = require('gulp-util'),
-	debug = require('gulp-debug');
 
 //requires
 
@@ -35,7 +34,7 @@ var LIVERELOAD_PORT = 35729;
  *    Script build task. Combines and uglifies JS, producing
  *    both a minified and non-minified version in dist/ and
  *    dev/ respectively.
- * 
+ *
  * 1. Using all .js files in /src/scripts
  * 2. Combine into main.js
  * 3. Output development version to dev/js
