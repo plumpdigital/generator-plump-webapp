@@ -1,6 +1,7 @@
 
 var gulp = require('gulp'),
-	gutil = require('gulp-util');
+	gutil = require('gulp-util'),
+	debug = require('gulp-debug');
 
 //requires
 
@@ -81,16 +82,20 @@ gulp.task('styles', function() {
 /**
  *    Template rendering tasks. Compiles Swig template into HTML
  *    in /dev and /dist
+ *
+ *    Disable Swig caching. Without this, any task that continues to
+ *    run (e.g. watch / serve) will re-used the memory-cached compiled
+ *    template and not reflect any changes.
  */
 gulp.task('templates', function() {
 	return gulp.src('src/*.html')
-		.pipe(swig())
+		.pipe(swig({defaults : { cache : false }})) /* [1] */
 		.pipe(gulp.dest('dev/'))
 		.pipe(gulp.dest('dist/'));
 });
 
 /**
- *    Image optimisation task.
+ *    Image optimsation task.
  *
  * 1. Use any files in any subdirectory of src/images.
  * 2. Optimise, using cache to prevent re-optimising images
@@ -128,7 +133,7 @@ gulp.task('copy', function() {
  * 1. Any changes to any .scss files starts styles task.
  * 2. Any changes to any .js files starts scripts task.
  * 3. Any changes to any files in images/ starts images task.
- * 4. Any changes to html files or templates starts templates task.
+ * 4. Any changes to HTML templates starts templates task.
  */
 gulp.task('watch', function() {
 
@@ -176,7 +181,7 @@ gulp.task('develop', function() {
 
 	var lr = livereload(LIVERELOAD_PORT);
 
-	gulp.watch('dev/**').on('change', function(file) { /* [3] */
+	gulp.watch('dev/**/*').on('change', function(file) { /* [3] */
 		lr.changed(file.path);
 	});
 
