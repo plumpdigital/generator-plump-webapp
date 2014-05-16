@@ -14,6 +14,7 @@ var concat       = require('gulp-concat'),
 	jshint       = require('gulp-jshint'),
 	rename       = require('gulp-rename'),
 	swig         = require('gulp-swig'),
+	prettify     = require('gulp-prettify'),
 	sass         = require('gulp-ruby-sass'),
 	autoprefixer = require('gulp-autoprefixer'),
 	minifycss    = require('gulp-minify-css'),
@@ -82,13 +83,15 @@ gulp.task('styles', function() {
  *    Template rendering tasks. Compiles Swig template into HTML
  *    in /dev and /dist
  *
- *    Disable Swig caching. Without this, any task that continues to
+ * 1. Disable Swig caching. Without this, any task that continues to
  *    run (e.g. watch / serve) will re-used the memory-cached compiled
  *    template and not reflect any changes.
+ * 2. Prettify the HTML output because everyone likes nicely formatted HTML
  */
 gulp.task('templates', function() {
 	return gulp.src('src/*.html')
 		.pipe(swig({defaults : { cache : false }})) /* [1] */
+		.pipe(prettify()) /* [2] */
 		.pipe(gulp.dest('dev/'))
 		.pipe(gulp.dest('dist/'));
 });
