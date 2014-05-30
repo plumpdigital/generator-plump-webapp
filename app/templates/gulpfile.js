@@ -19,7 +19,7 @@ var concat       = require('gulp-concat'),
 	autoprefixer = require('gulp-autoprefixer'),
 	minifycss    = require('gulp-minify-css'),
 	imagemin     = require('gulp-imagemin'),
-	cache        = require('gulp-cache'),
+	newer        = require('gulp-newer'),
 	clean        = require('gulp-clean'),
 	livereload   = require('gulp-livereload');
 
@@ -59,7 +59,7 @@ gulp.task('scripts', function() {
  *    and outputs both a minified and non-minified version into
  *    dist/ and dev/ respectively.
  *
- * 1. Using the main SCSS file.
+ * 1. Using the style SCSS file.
  * 2. Compile using SASS, expanded style.
  * 3. Auto-prefix (e.g. -moz-) using last 2 browser versions.
  * 4. Output prefixed but non-minifed CSS to dev/css
@@ -69,7 +69,7 @@ gulp.task('scripts', function() {
  */
 gulp.task('styles', function() {
 
-	return gulp.src('src/styles/main.scss') /* [1] */
+	return gulp.src('src/styles/style.scss') /* [1] */
 		.pipe(sass({ style : 'expanded' })) /* [2] */
 		.pipe(autoprefixer('last 2 versions')) /* [3] */
 		.pipe(gulp.dest('dev/css')) /* [4] */
@@ -99,20 +99,20 @@ gulp.task('templates', function() {
 /**
  *    Image optimsation task.
  *
- * 1. Use any files in any subdirectory of src/images.
- * 2. Optimise, using cache to prevent re-optimising images
- *    that have not changed.
- * 3. Output optimised to dev/images.
- * 4. Output optimised to build/images.
+ * 1. Use any files in any subdirectory of src/images
+ * 2. Filter to only images that are newer than in dev/images
+ * 3. Output optimised to dev/images
+ * 4. Output optimised to build/images
  */
 gulp.task('images', function() {
 
 	return gulp.src('src/images/**/*') /* [1] */
-		.pipe(cache(imagemin({ /* [2] */
+		.pipe(newer('dev/images')) /* [2] */
+		.pipe(imagemin({
 			optimizationLevel : 3,
 			progressive : true,
 			interlaced : true
-		})))
+		}))
 		.pipe(gulp.dest('dev/images')) /* [3] */
 		.pipe(gulp.dest('dist/images')); /* [4] */
 
