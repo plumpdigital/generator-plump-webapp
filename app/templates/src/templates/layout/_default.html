@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>{% block title %}{% endblock %}</title>
+		<meta name="description" content="">
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+		<meta http-equiv="cleartype" content="on">
+		{%  block head  %}
+			{%  if dist  %}
+				<link rel="stylesheet" href="css/style.min.css">
+			{%  else  %}
+				<link rel="stylesheet" href="css/style.css">
+			{%  endif  %}
+		{%  endblock  %}
+	</head>
+	<body>
+
+		{% include '../partials/_header.html' %}
+
+		{% block content %}{% endblock %}
+
+		{% include '../partials/_footer.html' %}
+
+	</body>
+</html>
