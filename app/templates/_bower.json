@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "dependencies": {
   	<% for (var i = 0, l = inuitModules.length; i < l; i++) { %>
-  		"inuit-<%= inuitModules[i] %>" : "latest"<% if (i < l - 1) { %>,<% } %>
+  		"inuit-<%= inuitModules[i] %>" : "latest",
+  	<% } %>
+  	<% for (var i = 0, l = plumpModules.length; i < l; i++) { %>
+  		"plumpcss-<%= plumpModules[i] %>" : "latest"<% if (i < l - 1) { %>,<% } %>
   	<% } %>
   }
 }

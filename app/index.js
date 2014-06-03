@@ -36,7 +36,9 @@ var inuitModules = [
 
 //Bower plump module options (prepended with plumpcss-)
 var plumpModules = [
-
+	'nav-list',
+	'exhibit',
+	'floats'
 ];
 
 /**
@@ -69,14 +71,20 @@ var PlumpGenerator = yeoman.generators.Base.extend({
 		this.log(chalk.magenta('You\'re using the Plump web generator.'));
 
 		var prompts = [{
-			type: 'checkbox',
-			name: 'inuitModules',
-			message: 'Which inuit modules do you require?',
+			type : 'checkbox',
+			name : 'inuitModules',
+			message : 'Which inuit modules do you require?',
 			choices : this._getModuleChoices(inuitModules)
+		},{
+			type : 'checkbox',
+			name : 'plumpModules',
+			message : 'Which plumpcss modules do you require?',
+			choices : this._getModuleChoices(plumpModules)
 		}];
 
 		this.prompt(prompts, function (props) {
 			this.inuitModules = props.inuitModules;
+			this.plumpModules = props.plumpModules;
 			done();
 		}.bind(this));
 	},
