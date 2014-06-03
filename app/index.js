@@ -34,7 +34,7 @@ var inuitModules = [
 	'widths'
 ];
 
-//Bower plump module options.
+//Bower plump module options (prepended with plumpcss-)
 var plumpModules = [
 
 ];
@@ -79,7 +79,7 @@ var PlumpGenerator = yeoman.generators.Base.extend({
 			this.inuitModules = props.inuitModules;
 			done();
 		}.bind(this));
-  },
+	},
 
 	/**
 	 *    Create the app files.
@@ -87,6 +87,7 @@ var PlumpGenerator = yeoman.generators.Base.extend({
 	 * 1. Primary source directory is /src
 	 * 2. Create NPM and Bower config. Using template rather than
 	 *    copy runs the template through the Lo-Dash parser.
+	 * 3. Create base SASS stylesheet.
 	 */
 	app: function () {
 		this.mkdir('src'); /* [1] */
@@ -101,6 +102,9 @@ var PlumpGenerator = yeoman.generators.Base.extend({
 		this.mkdir('src/images');
 		this.mkdir('src/styles');
 		this.mkdir('src/scripts');
+
+		/* [3] */
+		this.template('_style.scss', 'src/styles/style.scss');
 	},
 
 	/**

@@ -1,0 +1,117 @@
+/*------------------------------------*\
+		 #STYLES
+\*------------------------------------*/
+
+/**
+ *    This is a starting point created by the Yeoman generator. All the
+ *    Inuit and PlumpCSS modules are commented out to start with. Remove
+ *    individual comments (and this one) per-project.
+ */
+
+/**
+ *    Shearing layers is a concept coined by architect Frank Duffy which
+ *    was later elaborated by Stewart Brand in his book
+ *    How Buildings Learn: What Happens After They’re Built (Brand, 1994),
+ *    and refers to buildings as composed of several layers of change.
+ *
+ *    The concept of Shearing Layers can be adopted to architect CSS into
+ *    layers of decreasing scope (inverted pyramid):
+ *
+ * 1. Settings: Sass vars, etc.
+ * 2. Tools: Functions and mixins.
+ * 3. Generic: Generic, high-level styling, like resets, etc.
+ * 4. Base: Unclasses HTML elements (e.g. `h2`, `ul`).
+ * 5. Object: Objects and abstractions.
+ * 6. Components: Your designed UI elements (inuitcss includes none of these).
+ * 7. Trumps: Overrides and helper classes.
+ *
+ *    We can import our own partials in the relevant locations/layers.
+ *    We name them in the _<layer>.<file>.scss format.
+ */
+
+/*------------------------------------*\
+	#SETTINGS
+\*------------------------------------*/
+
+//@import "bower_components/inuit-defaults/settings.defaults";
+
+/*------------------------------------*\
+	#TOOLS
+\*------------------------------------*/
+
+//@import "bower_components/inuit-functions/tools.functions";
+
+//@import "bower_components/inuit-mixins/tools.mixins";
+
+/*------------------------------------*\
+	#GENERIC
+\*------------------------------------*/
+
+//@import "bower_components/inuit-normalize/generic.normalize";
+
+//@import "bower_components/inuit-reset/generic.reset";
+
+//@import "bower_components/inuit-box-sizing/generic.box-sizing";
+
+//@import "bower_components/inuit-shared/generic.shared";
+
+//@import "bower_components/inuit-clearfix/generic.clearfix";
+
+/*------------------------------------*\
+	#BASE
+\*------------------------------------*/
+
+//@import "bower_components/inuit-page/base.page";
+
+//@import "bower_components/inuit-paragraphs/base.paragraphs";
+
+//@import "bower_components/inuit-headings/base.headings";
+
+//@import "bower_components/inuit-lists/base.lists";
+
+//@import "bower_components/inuit-images/base.images";
+
+/*------------------------------------*\
+	#OBJECTS
+\*------------------------------------*/
+
+//@import "bower_components/inuit-layout/objects.layout";
+
+//@import "bower_components/inuit-bare-list/objects.bare-list";
+
+//@import "bower_components/inuit-block-list/objects.block-list";
+
+//@import "bower_components/inuit-ui-list/objects.ui-list";
+
+//@import "bower_components/inuit-tables/objects.tables";
+
+//@import "bower_components/inuit-media/objects.media";
+
+//@import "bower_components/inuit-flag/objects.flag";
+
+//@import "bower_components/inuit-box/objects.box";
+
+//@import "bower_components/inuit-buttons/objects.buttons";
+
+//@import "bower_components/inuit-tabs/objects.tabs";
+
+/*------------------------------------*\
+	#COMPONENTS
+\*------------------------------------*/
+
+
+
+/*------------------------------------*\
+	#TRUMPS
+\*------------------------------------*/
+
+/**
+ *    As of v0.2.0, inuit-widths does not include media-query responsive
+ *    widths so we're using our own based off this pull request:
+ *
+ *    https://github.com/inuitcss/trumps.widths/pull/3
+ */
+
+//@import "bower_components/inuit-widths/trumps.widths";
+
+//@import "bower_components/inuit-spacing/trumps.spacing";
