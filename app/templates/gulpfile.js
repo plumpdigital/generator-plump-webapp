@@ -1,11 +1,12 @@
 
-var gulp = require('gulp'),
-	gutil = require('gulp-util');
+var gulp 	= require('gulp'),
+	gutil 	= require('gulp-util');
 
 //requires
 
 var express = require('express'),
-	open = require('open');
+	open 	= require('open'),
+	merge 	= require('merge-stream');
 
 //plugin requires
 
@@ -14,7 +15,6 @@ var concat       = require('gulp-concat'),
 	jshint       = require('gulp-jshint'),
 	rename       = require('gulp-rename'),
 	swig         = require('gulp-swig'),
-	prettify     = require('gulp-prettify'),
 	sass         = require('gulp-ruby-sass'),
 	autoprefixer = require('gulp-autoprefixer'),
 	minifycss    = require('gulp-minify-css'),
@@ -27,9 +27,9 @@ var concat       = require('gulp-concat'),
  * Constants
  */
 
-var DIST_SERVER_PORT = 9001;
-var DEV_SERVER_PORT = 9000;
-var LIVERELOAD_PORT = 35729;
+var DIST_SERVER_PORT 	= 9001;
+var DEV_SERVER_PORT 	= 9000;
+var LIVERELOAD_PORT 	= 35729;
 
 /**
  *    Script build task. Combines and uglifies JS, producing
@@ -86,14 +86,28 @@ gulp.task('styles', function() {
  * 1. Disable Swig caching. Without this, any task that continues to
  *    run (e.g. watch / serve) will re-used the memory-cached compiled
  *    template and not reflect any changes.
- * 2. Prettify the HTML output because everyone likes nicely formatted HTML
+ * 2. Set 'dist' so that it can be checked within the template.
+ * 3. Return the merged stream. This allows us to have two disparate stream
+ *    tasks for dev/dist doing slightly different things.
  */
 gulp.task('templates', function() {
-	return gulp.src('src/*.html')
-		.pipe(swig({defaults : { cache : false }})) /* [1] */
-		.pipe(prettify()) /* [2] */
-		.pipe(gulp.dest('dev/'))
+
+	var dev = gulp.src('src/*.html')
+		.pipe(swig({
+			defaults : { cache : false } /* [1] */
+		}))
+		.pipe(gulp.dest('dev/'));
+
+	var dist = gulp.src('src/*.html')
+		.pipe(swig({
+			defaults : { cache : false }, /* [1] */
+			data : {
+				dist : true /* [2] */
+			}
+		}))
 		.pipe(gulp.dest('dist/'));
+
+	return merge(dev, dist); /* [3] */
 });
 
 /**
