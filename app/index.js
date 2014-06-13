@@ -38,7 +38,9 @@ var inuitModules = [
 var plumpModules = [
 	'nav-list',
 	'exhibit',
-	'floats'
+	'floats',
+	'text-align',
+	'hide'
 ];
 
 /**
