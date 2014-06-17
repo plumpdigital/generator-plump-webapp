@@ -37,20 +37,23 @@ var LIVERELOAD_PORT 	= 35729;
  *    dev/ respectively.
  *
  * 1. Using all .js files in /src/scripts
- * 2. Combine into main.js
- * 3. Output development version to dev/js
- * 4. Rename to main.min.js
- * 5. Uglify to minify.
- * 6. Output minified version to dist/js
+ * 2. Run JSHint and report the output.
+ * 3. Combine into main.js
+ * 4. Output development version to dev/js
+ * 5. Rename to main.min.js
+ * 6. Uglify to minify.
+ * 7. Output minified version to dist/js
  */
 gulp.task('scripts', function() {
 
 	return gulp.src('src/scripts/*.js') /* [1] */
-		.pipe(concat('main.js')) /* [2] */
-		.pipe(gulp.dest('dev/js')) /* [3] */
-		.pipe(rename({ suffix : '.min' })) /* [4] */
-		.pipe(uglify()) /* [5] */
-		.pipe(gulp.dest('dist/js')); /* [6] */
+		.pipe(jshint()) /* [2] */
+		.pipe(jshint.reporter('default'))
+		.pipe(concat('main.js')) /* [3] */
+		.pipe(gulp.dest('dev/js')) /* [4] */
+		.pipe(rename({ suffix : '.min' })) /* [5] */
+		.pipe(uglify()) /* [6] */
+		.pipe(gulp.dest('dist/js')); /* [7] */
 
 });
 
