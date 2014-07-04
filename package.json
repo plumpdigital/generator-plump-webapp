@@ -9,6 +9,10 @@
     "email": "james@plumpdigital.co.uk",
     "url": "https://github.com/plumpdigital"
   },
+  "contributors": [
+    {"name": "James Howard", "email": "james@plumpdigital.co.uk"},
+    {"name": "Jon Hurrell", "email": "jon@plumpdigital.co.uk"}
+  ],
   "engines": {
     "node": ">=0.10.0"
   },
