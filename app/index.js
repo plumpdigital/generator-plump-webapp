@@ -36,8 +36,12 @@ var inuitModules = [
 
 //Bower plump module options (prepended with plumpcss-)
 var plumpModules = [
-	'nav-list',
+	'defaults',
+	'responsive',
+	'wrapper',
 	'exhibit',
+	'nav-list',
+	'meter',
 	'floats',
 	'text-align',
 	'hide'
