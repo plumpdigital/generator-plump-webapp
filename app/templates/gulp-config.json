@@ -1,0 +1,19 @@
+{
+	"files" : {
+		"scripts"        : "src/scripts/*.js",
+		"styles"         : "src/styles/style.scss",
+		"watchStyles"    : "src/styles/**/*.scss",
+		"images"         : "src/images/**/*",
+		"templates"      : "src/*.html",
+		"watchTemplates" : "src/**/*.html",
+		"copy"           : "src/copy/**/*",
+		"copyBase"       : "src/copy"
+	},
+	"stage" : {
+		"host"       : "",
+		"user"       : "",
+		"password"   : "",
+		"remotePath" : ""
+	},
+	"miniftyImages" : true
+}

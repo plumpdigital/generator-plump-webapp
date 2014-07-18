@@ -1,12 +1,12 @@
 
-var gulp 	= require('gulp'),
-	gutil 	= require('gulp-util');
+var gulp    = require('gulp'),
+	gutil   = require('gulp-util');
 
 //requires
 
 var express = require('express'),
-	open 	= require('open'),
-	merge 	= require('merge-stream');
+	open    = require('open'),
+	merge   = require('merge-stream');
 
 //plugin requires
 
@@ -21,7 +21,11 @@ var concat       = require('gulp-concat'),
 	imagemin     = require('gulp-imagemin'),
 	newer        = require('gulp-newer'),
 	clean        = require('gulp-clean'),
-	livereload   = require('gulp-livereload');
+	livereload   = require('gulp-livereload'),
+	ftp          = require('gulp-ftp');
+
+// load external config
+var config = require('./gulp-config.json');
 
 /**
  * Constants
@@ -36,7 +40,7 @@ var LIVERELOAD_PORT 	= 35729;
  *    both a minified and non-minified version in dist/ and
  *    dev/ respectively.
  *
- * 1. Using all .js files in /src/scripts
+ * 1. Using all files defined in files.scripts config.
  * 2. Run JSHint and report the output.
  * 3. Combine into main.js
  * 4. Output development version to dev/js
@@ -46,7 +50,7 @@ var LIVERELOAD_PORT 	= 35729;
  */
 gulp.task('scripts', function() {
 
-	return gulp.src('src/scripts/*.js') /* [1] */
+	return gulp.src(config.files.scripts) /* [1] */
 		.pipe(jshint()) /* [2] */
 		.pipe(jshint.reporter('default'))
 		.pipe(concat('main.js')) /* [3] */
@@ -62,7 +66,7 @@ gulp.task('scripts', function() {
  *    and outputs both a minified and non-minified version into
  *    dist/ and dev/ respectively.
  *
- * 1. Using the style SCSS file.
+ * 1. Using all files defined in files.styles config.
  * 2. Compile using SASS, expanded style.
  * 3. Auto-prefix (e.g. -moz-) using last 2 browser versions.
  * 4. Output prefixed but non-minifed CSS to dev/css
@@ -72,7 +76,7 @@ gulp.task('scripts', function() {
  */
 gulp.task('styles', function() {
 
-	return gulp.src('src/styles/style.scss') /* [1] */
+	return gulp.src(config.files.styles) /* [1] */
 		.pipe(sass({ style : 'expanded' })) /* [2] */
 		.pipe(autoprefixer('last 2 versions')) /* [3] */
 		.pipe(gulp.dest('dev/css')) /* [4] */
@@ -87,7 +91,7 @@ gulp.task('styles', function() {
  *    in /dev and /dist
  *
  * 1. Disable Swig caching. Without this, any task that continues to
- *    run (e.g. watch / serve) will re-used the memory-cached compiled
+ *    run (e.g. watch / serve) will re-use the memory-cached compiled
  *    template and not reflect any changes.
  * 2. Set 'dist' so that it can be checked within the template.
  * 3. Return the merged stream. This allows us to have two disparate stream
@@ -95,13 +99,13 @@ gulp.task('styles', function() {
  */
 gulp.task('templates', function() {
 
-	var dev = gulp.src('src/*.html')
+	var dev = gulp.src(config.files.templates)
 		.pipe(swig({
 			defaults : { cache : false } /* [1] */
 		}))
 		.pipe(gulp.dest('dev/'));
 
-	var dist = gulp.src('src/*.html')
+	var dist = gulp.src(config.files.templates)
 		.pipe(swig({
 			defaults : { cache : false }, /* [1] */
 			data : {
@@ -116,53 +120,58 @@ gulp.task('templates', function() {
 /**
  *    Image optimsation task.
  *
- * 1. Use any files in any subdirectory of src/images
- * 2. Filter to only images that are newer than in dev/images
- * 3. Output optimised to dev/images
- * 4. Output optimised to build/images
+ * 1. Determine whether to use imagemin or do nothing (noop).
+ * 2. Use files defined in files.images config.
+ * 3. Filter to only images that are newer than in dev/images
+ * 4. Output optimised to dev/images
+ * 5. Output optimised to build/images
  */
 gulp.task('images', function() {
 
-	return gulp.src('src/images/**/*') /* [1] */
-		.pipe(newer('dev/images')) /* [2] */
-		.pipe(imagemin({
-			optimizationLevel : 3,
-			progressive : true,
-			interlaced : true
-		}))
-		.pipe(gulp.dest('dev/images')) /* [3] */
-		.pipe(gulp.dest('dist/images')); /* [4] */
+	var imagemin = config.minifyImages ? imagemin({
+		optimizationLevel : 3,
+		progressive : true,
+		interlaced : true
+	}) : gutil.noop(); /* [1] */
+
+	return gulp.src(config.files.images) /* [2] */
+		.pipe(newer('dev/images')) /* [3] */
+		.pipe(imagemin)
+		.pipe(gulp.dest('dev/images')) /* [4] */
+		.pipe(gulp.dest('dist/images')); /* [5] */
 
 });
 
 /**
- * Copy task. Copies over any files that are not part of other tasks
- * (e.g. HTML pages) to both /dev and /dist
+ *    Copy task. Copies over any files that are not part of other tasks
+ *    (e.g. HTML pages, JS libraries) to both /dev and /dist
+ *
+ * 1. Change the base path to avoid copying top-level directories.
  */
 gulp.task('copy', function() {
-	/* populate this task with any extra files you need to copy */
-	/*return gulp.src('src/*.html')
+	return gulp.src(config.files.copy, { base : config.copyBase }) /* [1] */
 		.pipe(gulp.dest('dev'))
-		.pipe(gulp.dest('dist'));*/
+		.pipe(gulp.dest('dist'));
 });
 
 /**
- *    Watch task. Sets up several watchers:
+ *    Watch task. Sets up several watchers. Using different config for styles and
+ *    templates as they have partials that need watching but not compiling.
  *
- * 1. Any changes to any .scss files starts styles task.
- * 2. Any changes to any .js files starts scripts task.
- * 3. Any changes to any files in images/ starts images task.
- * 4. Any changes to HTML templates starts templates task.
+ * 1. Any changes to any files from files.watchStyles config starts styles task.
+ * 2. Any changes to any files from files.scripts config starts scripts task.
+ * 3. Any changes to any files from files.images config starts images task.
+ * 4. Any changes to any files from files.watchTemplates starts templates task.
  */
 gulp.task('watch', function() {
 
-	gulp.watch('src/styles/**/*.scss', ['styles']);	/* [1] */
+	gulp.watch(config.files.watchStyles, ['styles']);	/* [1] */
 
-	gulp.watch('src/scripts/**/*.js', ['scripts']); /* [2] */
+	gulp.watch(config.files.scripts, ['scripts']); /* [2] */
 
-	gulp.watch('src/images/**/*', ['images']); /* [3] */
+	gulp.watch(config.files.images, ['images']); /* [3] */
 
-	gulp.watch('src/**/*.html', ['templates']); /* [4] */
+	gulp.watch(config.files.watchTemplates, ['templates']); /* [4] */
 
 });
 
@@ -179,6 +188,22 @@ gulp.task('serve', function() {
 	server.listen(DIST_SERVER_PORT); /* [1] */
 
 	open('http://localhost:' + DIST_SERVER_PORT); /* [2] */
+
+});
+
+/**
+ *    Stage task. Builds then uploads the contents of dist/ to an FTP site
+ *    using values from stage config.
+ */
+gulp.task('stage', ['build'], function() {
+
+	return gulp.src('dist/**/*')
+		.pipe(ftp({
+			host : config.stage.host,
+			user : config.stage.user,
+			pass : config.stage.password,
+			remotePath : config.stage.remotePath
+		}));
 
 });
 
