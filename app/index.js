@@ -74,7 +74,7 @@ var PlumpGenerator = yeoman.generators.Base.extend({
 		this.log(this.yeoman);
 
 		// replace it with a short and sweet description of your generator
-		this.log(chalk.magenta('You\'re using the Plump web generator.'));
+		this.log(chalk.magenta('You\'re using the Plump web generator v' + this.pkg.version));
 
 		var prompts = [{
 			type : 'checkbox',
