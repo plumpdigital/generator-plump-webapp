@@ -11,7 +11,8 @@
   },
   "contributors": [
     {"name": "James Howard", "email": "james@plumpdigital.co.uk"},
-    {"name": "Jon Hurrell", "email": "jon@plumpdigital.co.uk"}
+    {"name": "Jon Hurrell", "email": "jon@plumpdigital.co.uk"},
+    {"name": "James Martin-Davies", "email": "jamesmd@plumpdigital.co.uk"}
   ],
   "engines": {
     "node": ">=0.10.0"
