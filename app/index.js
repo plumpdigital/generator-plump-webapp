@@ -16,6 +16,7 @@ var inuitModules = [
 	'shared',
 	'clearfix',
 	'page',
+	'print',
 	'headings',
 	'paragraphs',
 	'lists',
@@ -27,17 +28,21 @@ var inuitModules = [
 	'box',
 	'tabs',
 	'buttons',
-	'bare-list',
-	'block-list',
-	'ui-list',
+	'list-ui',
+	'list-bare',
+	'list-block',
+	'list-inline',
 	'spacing',
-	'widths'
+	'widths',
+	'spacing-responsive',
+	'widths-responsive',
+	'responsive-settings',
+	'responsive-tools'
 ];
 
 //Bower plump module options (prepended with plumpcss-)
 var plumpModules = [
 	'defaults',
-	'responsive',
 	'wrapper',
 	'exhibit',
 	'nav-list',
