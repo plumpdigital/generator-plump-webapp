@@ -62,7 +62,10 @@ var PlumpGenerator = yeoman.generators.Base.extend({
 		this.pkg = require('../package.json');
 
 		this.on('end', function () {
-			this.log(chalk.magenta('I\'m all done. You now need to run npm install / bower install.'));
+			this.log(chalk.magenta.bold('I\'m all done. You now need to run ') +
+					 chalk.green.bold('npm install ') +
+					 chalk.magenta.bold('& ') +
+					 chalk.green.bold('bower install'));
 		});
 	},
 
