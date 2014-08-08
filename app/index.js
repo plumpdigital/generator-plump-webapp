@@ -44,6 +44,7 @@ var inuitModules = [
 var plumpModules = [
 	'defaults',
 	'wrapper',
+	'stack',
 	'exhibit',
 	'nav-list',
 	'meter',
