@@ -5,8 +5,8 @@
 // *
 // *      This is a starting point created by the Yeoman generator. All the
 // *      Inuit and PlumpCSS modules are commented out to start with apart from
-// *      default setting imports which are required throughout the project.
-// *      Remove individual comments (and this one) per-project.
+// *      default setting and tool imports which are required throughout the
+// *      project. Remove individual comments (and this one) per-project.
 // *
 
 // *
@@ -38,15 +38,19 @@
 
 @import 'bower_components/inuit-defaults/settings.defaults';
 
+@import 'bower_components/inuit-responsive-settings/settings.responsive';
+
 @import 'bower_components/plumpcss-defaults/settings.defaults';
 
 ///*------------------------------------*\
 //	 #TOOLS
 //\*------------------------------------*/
 
-// @import 'bower_components/inuit-functions/tools.functions';
+@import 'bower_components/inuit-mixins/tools.mixins';
 
-// @import 'bower_components/inuit-mixins/tools.mixins';
+@import 'bower_components/inuit-functions/tools.functions';
+
+@import 'bower_components/inuit-responsive-tools/tools.responsive';
 
 ///*------------------------------------*\
 //	 #GENERIC
@@ -126,7 +130,11 @@
 
 // @import 'bower_components/inuit-widths/trumps.widths';
 
+// @import 'bower_components/inuit-widths-responsive/trumps.widths-responsive';
+
 // @import 'bower_components/inuit-spacing/trumps.spacing';
+
+// @import 'bower_components/inuit-spacing-responsive/trumps.spacing-responsive';
 
 // @import 'bower_components/inuit-clearfix/trumps.clearfix';
 
