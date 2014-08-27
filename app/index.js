@@ -16,6 +16,7 @@ var inuitModules = [
 	'shared',
 	'clearfix',
 	'page',
+	'print',
 	'headings',
 	'paragraphs',
 	'lists',
@@ -27,18 +28,23 @@ var inuitModules = [
 	'box',
 	'tabs',
 	'buttons',
-	'bare-list',
-	'block-list',
-	'ui-list',
+	'list-ui',
+	'list-bare',
+	'list-block',
+	'list-inline',
 	'spacing',
-	'widths'
+	'widths',
+	'spacing-responsive',
+	'widths-responsive',
+	'responsive-settings',
+	'responsive-tools'
 ];
 
 //Bower plump module options (prepended with plumpcss-)
 var plumpModules = [
 	'defaults',
-	'responsive',
 	'wrapper',
+	'stack',
 	'exhibit',
 	'nav-list',
 	'meter',
@@ -57,7 +63,10 @@ var PlumpGenerator = yeoman.generators.Base.extend({
 		this.pkg = require('../package.json');
 
 		this.on('end', function () {
-			this.log(chalk.magenta('I\'m all done. You now need to run npm install / bower install.'));
+			this.log(chalk.magenta.bold('I\'m all done. You now need to run ') +
+					 chalk.green.bold('npm install ') +
+					 chalk.magenta.bold('& ') +
+					 chalk.green.bold('bower install'));
 		});
 	},
 
