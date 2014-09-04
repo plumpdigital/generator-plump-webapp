@@ -4,11 +4,10 @@
 
 // *
 // *      This is a starting point created by the Yeoman generator. All the
-// *      Inuit and PlumpCSS modules are commented out to start with apart from
-// *      default setting and tool imports which are required throughout the
-// *      project. Remove individual comments (and this one) per-project.
+// *      Inuit and PlumpCSS modules are commented out to start with.
+// *      Remove individual comments (and this one) per-project.
 // *
-
+// *
 // *
 // *      Shearing layers is a concept coined by architect Frank Duffy which
 // *      was later elaborated by Stewart Brand in his book
@@ -36,83 +35,83 @@
 //	 #SETTINGS
 //\*------------------------------------*/
 
-@import 'bower_components/inuit-defaults/settings.defaults';
+// @import '../../bower_components/inuit-defaults/settings.defaults';
 
-@import 'bower_components/inuit-responsive-settings/settings.responsive';
+// @import '../../bower_components/inuit-responsive-settings/settings.responsive';
 
-@import 'bower_components/plumpcss-defaults/settings.defaults';
+// @import '../../bower_components/plumpcss-defaults/settings.defaults';
 
 ///*------------------------------------*\
 //	 #TOOLS
 //\*------------------------------------*/
 
-@import 'bower_components/inuit-mixins/tools.mixins';
+// @import '../../bower_components/inuit-mixins/tools.mixins';
 
-@import 'bower_components/inuit-functions/tools.functions';
+// @import '../../bower_components/inuit-functions/tools.functions';
 
-@import 'bower_components/inuit-responsive-tools/tools.responsive';
+// @import '../../bower_components/inuit-responsive-tools/tools.responsive';
 
 ///*------------------------------------*\
 //	 #GENERIC
 //\*------------------------------------*/
 
-// @import 'bower_components/inuit-normalize/generic.normalize';
+// @import '../../bower_components/inuit-normalize/generic.normalize';
 
-// @import 'bower_components/inuit-reset/generic.reset';
+// @import '../../bower_components/inuit-reset/generic.reset';
 
-// @import 'bower_components/inuit-box-sizing/generic.box-sizing';
+// @import '../../bower_components/inuit-box-sizing/generic.box-sizing';
 
-// @import 'bower_components/inuit-shared/generic.shared';
+// @import '../../bower_components/inuit-shared/generic.shared';
 
 ///*------------------------------------*\
 //	 #BASE
 //\*------------------------------------*/
 
-// @import 'bower_components/inuit-page/base.page';
+// @import '../../bower_components/inuit-page/base.page';
 
-// @import 'bower_components/inuit-paragraphs/base.paragraphs';
+// @import '../../bower_components/inuit-paragraphs/base.paragraphs';
 
-// @import 'bower_components/inuit-headings/base.headings';
+// @import '../../bower_components/inuit-headings/base.headings';
 
-// @import 'bower_components/inuit-lists/base.lists';
+// @import '../../bower_components/inuit-lists/base.lists';
 
-// @import 'bower_components/inuit-images/base.images';
+// @import '../../bower_components/inuit-images/base.images';
 
 ///*------------------------------------*\
 //	 #OBJECTS
 //\*------------------------------------*/
 
-// @import 'bower_components/inuit-layout/objects.layout';
+// @import '../../bower_components/inuit-layout/objects.layout';
 
-// @import 'bower_components/inuit-list-ui/objects.list-ui';
+// @import '../../bower_components/inuit-list-ui/objects.list-ui';
 
-// @import 'bower_components/inuit-list-bare/objects.list-bare';
+// @import '../../bower_components/inuit-list-bare/objects.list-bare';
 
-// @import 'bower_components/inuit-list-block/objects.list-block';
+// @import '../../bower_components/inuit-list-block/objects.list-block';
 
-// @import 'bower_components/inuit-list-inline/objects.list-inline';
+// @import '../../bower_components/inuit-list-inline/objects.list-inline';
 
-// @import 'bower_components/inuit-tables/objects.tables';
+// @import '../../bower_components/inuit-tables/objects.tables';
 
-// @import 'bower_components/inuit-media/objects.media';
+// @import '../../bower_components/inuit-media/objects.media';
 
-// @import 'bower_components/inuit-flag/objects.flag';
+// @import '../../bower_components/inuit-flag/objects.flag';
 
-// @import 'bower_components/inuit-box/objects.box';
+// @import '../../bower_components/inuit-box/objects.box';
 
-// @import 'bower_components/inuit-buttons/objects.buttons';
+// @import '../../bower_components/inuit-buttons/objects.buttons';
 
-// @import 'bower_components/inuit-tabs/objects.tabs';
+// @import '../../bower_components/inuit-tabs/objects.tabs';
 
-// @import 'bower_components/plumpcss-stack/objects.stack';
+// @import '../../bower_components/plumpcss-stack/objects.stack';
 
-// @import 'bower_components/plumpcss-meter/objects.meter';
+// @import '../../bower_components/plumpcss-meter/objects.meter';
 
-// @import 'bower_components/plumpcss-wrapper/objects.wrapper';
+// @import '../../bower_components/plumpcss-wrapper/objects.wrapper';
 
-// @import 'bower_components/plumpcss-exhibit/objects.exhibit';
+// @import '../../bower_components/plumpcss-exhibit/objects.exhibit';
 
-// @import 'bower_components/plumpcss-nav-list/objects.nav-list';
+// @import '../../bower_components/plumpcss-nav-list/objects.nav-list';
 
 ///*------------------------------------*\
 //	 #COMPONENTS
@@ -124,20 +123,20 @@
 //	 #TRUMPS
 //\*------------------------------------*/
 
-// @import 'bower_components/inuit-print/trumps.print';
+// @import '../../bower_components/inuit-print/trumps.print';
 
-// @import 'bower_components/inuit-widths/trumps.widths';
+// @import '../../bower_components/inuit-widths/trumps.widths';
 
-// @import 'bower_components/inuit-widths-responsive/trumps.widths-responsive';
+// @import '../../bower_components/inuit-widths-responsive/trumps.widths-responsive';
 
-// @import 'bower_components/inuit-spacing/trumps.spacing';
+// @import '../../bower_components/inuit-spacing/trumps.spacing';
 
-// @import 'bower_components/inuit-spacing-responsive/trumps.spacing-responsive';
+// @import '../../bower_components/inuit-spacing-responsive/trumps.spacing-responsive';
 
-// @import 'bower_components/inuit-clearfix/trumps.clearfix';
+// @import '../../bower_components/inuit-clearfix/trumps.clearfix';
 
-// @import 'bower_components/plumpcss-text-align/trumps.text-align';
+// @import '../../bower_components/plumpcss-text-align/trumps.text-align';
 
-// @import 'bower_components/plumpcss-floats/trumps.floats';
+// @import '../../bower_components/plumpcss-floats/trumps.floats';
 
-// @import 'bower_components/plumpcss-hide/trumps.hide';
+// @import '../../bower_components/plumpcss-hide/trumps.hide';
