@@ -1,15 +1,17 @@
-
+//    Gulp utility.
 var gulp    = require('gulp'),
-	gutil   = require('gulp-util');
+	gutil   = require('gulp-util'),
+	plumber = require('gulp-plumber');
 
-//requires
+//    Requires.
+var express     = require('express'),
+	open        = require('open'),
+	rimraf      = require('rimraf'),
+	merge       = require('merge-stream'),
+	runsequence = require('run-sequence'),
+	stylish     = require('jshint-stylish');
 
-var express = require('express'),
-	open    = require('open'),
-	merge   = require('merge-stream');
-
-//plugin requires
-
+//    Plugin requires.
 var concat       = require('gulp-concat'),
 	uglify       = require('gulp-uglify'),
 	jshint       = require('gulp-jshint'),
@@ -20,15 +22,22 @@ var concat       = require('gulp-concat'),
 	minifycss    = require('gulp-minify-css'),
 	imagemin     = require('gulp-imagemin'),
 	newer        = require('gulp-newer'),
-	clean        = require('gulp-clean'),
 	livereload   = require('gulp-livereload'),
 	ftp          = require('gulp-ftp');
 
-// load external config
+//    Load external config.
 var config = require('./gulp-config.json');
 
+//    Load command-line arguments.
+var argv = require('yargs').argv;
+
+//    Error handler function.
+var onError = function (err) {
+	console.log(err);
+};
+
 /**
- * Constants
+ *    Constants.
  */
 
 var DIST_SERVER_PORT 	= 9001;
@@ -52,7 +61,7 @@ gulp.task('scripts', function() {
 
 	return gulp.src(config.files.scripts) /* [1] */
 		.pipe(jshint()) /* [2] */
-		.pipe(jshint.reporter('default'))
+		.pipe(jshint.reporter(stylish))
 		.pipe(concat('main.js')) /* [3] */
 		.pipe(gulp.dest('dev/js')) /* [4] */
 		.pipe(rename({ suffix : '.min' })) /* [5] */
@@ -62,27 +71,30 @@ gulp.task('scripts', function() {
 });
 
 /**
- *    Styles build task. Compiles CSS from Sass, auto-prefixes
+ *    Styles build task. Compiles CSS from SASS, auto-prefixes
  *    and outputs both a minified and non-minified version into
  *    dist/ and dev/ respectively.
  *
  * 1. Using all files defined in files.styles config.
- * 2. Compile using SASS, expanded style.
- * 3. Auto-prefix (e.g. -moz-) using last 2 browser versions.
- * 4. Output prefixed but non-minifed CSS to dev/css
- * 5. Rename to .min.css
- * 6. Minify the CSS.
- * 7. Output prefixed, minified CSS to dist/css.
+ * 2. Catch any errors within the SASS build pipeline.
+ * 3. Compile using SASS, expanded style.
+ * 4. Auto-prefix (e.g. -moz-) using last 2 browser versions.
+ * 5. Output prefixed but non-minifed CSS to dev/css
+ * 6. Rename to .min.css
+ * 7. Minify the CSS.
+ * 8. Output prefixed, minified CSS to dist/css.
  */
+
 gulp.task('styles', function() {
 
 	return gulp.src(config.files.styles) /* [1] */
-		.pipe(sass({ style : 'expanded' })) /* [2] */
-		.pipe(autoprefixer('last 2 versions')) /* [3] */
-		.pipe(gulp.dest('dev/css')) /* [4] */
-		.pipe(rename({ suffix : '.min' })) /* [5] */
-		.pipe(minifycss()) /* [6] */
-		.pipe(gulp.dest('dist/css')); /* [7] */
+		.pipe(plumber(onError)) /* [2] */
+		.pipe(sass({ style : 'expanded' })) /* [3] */
+		.pipe(autoprefixer('last 2 versions')) /* [4] */
+		.pipe(gulp.dest('dev/css')) /* [5] */
+		.pipe(rename({ suffix : '.min' })) /* [6] */
+		.pipe(minifycss()) /* [7] */
+		.pipe(gulp.dest('dist/css')); /* [8] */
 
 });
 
@@ -140,6 +152,17 @@ gulp.task('images', function() {
 		.pipe(gulp.dest('dev/images')) /* [4] */
 		.pipe(gulp.dest('dist/images')); /* [5] */
 
+});
+
+/**
+ *    Copy task. Copies over any files that are not part of other tasks
+ *    (e.g. HTML pages) to both /dev and /dist
+ *    Clean task. Deletes the dev/ and dist/ directories.
+ */
+gulp.task('clean', function(callback) {
+	return rimraf('./dev', function() {
+		rimraf('./dist', callback)
+	});
 });
 
 /**
@@ -211,17 +234,14 @@ gulp.task('stage', ['build'], function() {
  *    Develop task. Sets up watches and serves up /dev using
  *    livereload.
  *
- * 1. Initial run of build.
+ * 1. Initial run of build and watch.
  * 2. LiveReload server listens on the port specified above.
  * 3. Inform the LiveReload server of any change in /dev
  * 4. Injects the LiveReload JS automatically.
  * 5. Dev web server listens on the port specified above.
  * 6. Automatically open the new server URL in the default browser.
  */
-gulp.task('develop', function() {
-	gulp.start('build'); /* [1] */
-
-	gulp.start('watch');
+gulp.task('develop', ['build', 'watch'] /* [1] */, function() {
 
 	var lr = livereload(LIVERELOAD_PORT);
 
@@ -235,18 +255,25 @@ gulp.task('develop', function() {
 	server.use(express.static(__dirname + '/dev'));
 	server.listen(DEV_SERVER_PORT); /* [5] */
 
-	open('http://localhost:' + DEV_SERVER_PORT); /* [6] */
+	if (argv.open !== false) {
+		open('http://localhost:' + DEV_SERVER_PORT); /* [6] */
+	}
 
 });
 
 /**
  *    Build task. Runs other tasks that produce a built project
  *    in /dev and /dist.
+ *
+ * 1. Using runsequence to run clean first, separate to the build tasks. Passing
+ *    the Gulp callback to runsequence so that the task can complete correctly.
  */
-gulp.task('build', ['images', 'templates', 'styles', 'scripts', 'copy']);
+gulp.task('build', function(callback) {
+	runsequence('clean', ['images', 'templates', 'styles', 'scripts', 'copy'], callback);
+});
 
 /**
- * Default task. Lists out available tasks.
+ *    Default task. Lists out available tasks.
  */
 gulp.task('default', function() {
 
