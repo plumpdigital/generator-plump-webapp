@@ -110,8 +110,9 @@ var PlumpGenerator = yeoman.generators.Base.extend({
 	 * 1. Primary source directory is /src
 	 * 2. Create NPM and Bower config. Using template rather than
 	 *    copy runs the template through the Lo-Dash parser.
-	 * 3. Create base SASS stylesheet.
-	 * 4. Create base HTML page and Swig templates.
+	 * 3. Create base directories.
+	 * 4. Create base SASS stylesheets.
+	 * 5. Create base HTML page and Swig templates.
 	 */
 	app: function () {
 		this.mkdir('src'); /* [1] */
@@ -125,9 +126,11 @@ var PlumpGenerator = yeoman.generators.Base.extend({
 		this.mkdir('src/styles');
 		this.mkdir('src/scripts');
 
-		this.template('src/styles/_style.scss', 'src/styles/style.scss'); /* [3] */
-
 		/* [4] */
+		this.template('src/styles/_style.scss', 'src/styles/style.scss');
+		this.template('src/styles/_settings.colors.scss', 'src/styles/_settings.colors.scss');
+
+		/* [5] */
 		this.directory('src/templates', 'src/templates');
 		this.copy('src/index.html', 'src/index.html');
 	},
