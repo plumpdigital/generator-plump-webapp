@@ -23,7 +23,6 @@ var inuitModules = [
 	'images',
 	'tables',
 	'layout',
-	'media',
 	'flag',
 	'box',
 	'tabs',
@@ -43,8 +42,11 @@ var inuitModules = [
 //Bower plump module options (prepended with plumpcss-)
 var plumpModules = [
 	'defaults',
+	'mixins',
 	'wrapper',
+	'media',
 	'stack',
+	'band',
 	'exhibit',
 	'nav-list',
 	'meter',
