@@ -45,6 +45,7 @@ var plumpModules = [
 	'defaults',
 	'wrapper',
 	'stack',
+	'band',
 	'exhibit',
 	'nav-list',
 	'meter',
