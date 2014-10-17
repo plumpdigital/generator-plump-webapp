@@ -31,8 +31,12 @@
 // *      inuit.css: https://github.com/csswizardry/inuit.css/
 // *
 
+
+
+
+
 ///*------------------------------------*\
-//	 #SETTINGS
+//	 #SETTINGS [BOWER]
 //\*------------------------------------*/
 
 // @import '../../bower_components/inuit-defaults/settings.defaults';
@@ -43,8 +47,12 @@
 
 // @import 'settings.colors';
 
+
+
+
+
 ///*------------------------------------*\
-//	 #TOOLS
+//	 #TOOLS [BOWER]
 //\*------------------------------------*/
 
 // @import '../../bower_components/inuit-mixins/tools.mixins';
@@ -52,6 +60,12 @@
 // @import '../../bower_components/inuit-functions/tools.functions';
 
 // @import '../../bower_components/inuit-responsive-tools/tools.responsive';
+
+// @import '../../bower_components/plumpcss-mixins/tools.mixins';
+
+
+
+
 
 ///*------------------------------------*\
 //	 #GENERIC
@@ -64,6 +78,10 @@
 // @import '../../bower_components/inuit-box-sizing/generic.box-sizing';
 
 // @import '../../bower_components/inuit-shared/generic.shared';
+
+
+
+
 
 ///*------------------------------------*\
 //	 #BASE
@@ -78,6 +96,10 @@
 // @import '../../bower_components/inuit-lists/base.lists';
 
 // @import '../../bower_components/inuit-images/base.images';
+
+
+
+
 
 ///*------------------------------------*\
 //	 #OBJECTS
@@ -105,6 +127,8 @@
 
 // @import '../../bower_components/inuit-tabs/objects.tabs';
 
+// @import '../../bower_components/plumpcss-media/objects.media';
+
 // @import '../../bower_components/plumpcss-stack/objects.stack';
 
 // @import '../../bower_components/plumpcss-meter/objects.meter';
@@ -115,10 +139,16 @@
 
 // @import '../../bower_components/plumpcss-nav-list/objects.nav-list';
 
+
+
+
+
 ///*------------------------------------*\
 //	 #COMPONENTS
 //\*------------------------------------*/
 
+
+//    Define component-level declarations here.
 
 
 ///*------------------------------------*\
