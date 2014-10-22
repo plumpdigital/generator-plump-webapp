@@ -5,54 +5,82 @@ var path = require('path');
 var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 
-//Bower inuit package options (prepended with inuit-)
+/**
+ *    Bower inuit package options (prepended with inuit-).
+ *    Organise alphabetically within Shearing layer category.
+ */
 var inuitModules = [
+
+	// Settings
 	'defaults',
+	'responsive',
+
+	// Tools
 	'functions',
 	'mixins',
+	'responsive',
+
+	// Generic
+	'box-sizing',
 	'normalize',
 	'reset',
-	'box-sizing',
 	'shared',
-	'clearfix',
-	'page',
-	'print',
+
+	// Base
 	'headings',
-	'paragraphs',
-	'lists',
 	'images',
-	'media',
-	'tables',
-	'layout',
-	'flag',
+	'lists',
+	'page',
+	'paragraphs',
+
+	// Object
 	'box',
-	'tabs',
 	'buttons',
-	'list-ui',
+	'flag',
+	'layout',
 	'list-bare',
 	'list-block',
 	'list-inline',
+	'list-ui',
+	'media',
+	'pack',
+	'tables',
+	'tabs',
+
+	// Trumps
+	'clearfix',
+	'print',
 	'spacing',
-	'widths',
 	'spacing-responsive',
-	'widths-responsive',
-	'responsive-settings',
-	'responsive-tools'
+	'widths',
+	'widths-responsive'
 ];
 
-//Bower plump module options (prepended with plumpcss-)
+/**
+ *    Bower plump package options (prepended with plumpcss-).
+ *    Organise alphabetically within shearing layer category.
+ */
 var plumpModules = [
+
+	// Settings
 	'defaults',
+
+	// Tools
 	'mixins',
-	'wrapper',
-	'stack',
+
+	// Objects
 	'band',
+	'band-responsive',
 	'exhibit',
-	'nav-list',
 	'meter',
+	'nav-list',
+	'stack',
+	'wrapper',
+
+	// Trumps
 	'floats',
-	'text-align',
-	'hide'
+	'hide',
+	'text-align'
 ];
 
 /**
