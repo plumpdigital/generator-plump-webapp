@@ -6,19 +6,19 @@ var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 
 /**
- *    Bower inuit package options (prepended with inuit-).
+ *    Bower inuit package options (prepended with inuitcss-).
  *    Organise alphabetically within Shearing layer category.
  */
 var inuitModules = [
 
 	// Settings
 	'defaults',
-	'responsive',
+	'responsive-settings',
 
 	// Tools
 	'functions',
 	'mixins',
-	'responsive',
+	'responsive-tools',
 
 	// Generic
 	'box-sizing',
