@@ -175,6 +175,7 @@ var PlumpGenerator = yeoman.generators.Base.extend({
 	 projectfiles: function () {
 		this.copy('editorconfig', '.editorconfig'); /* [1] */
 		this.copy('jshintrc', '.jshintrc'); /* [2] */
+		this.copy('jshintignore', '.jshintignore'); /* [2] */
 		this.copy('gitignore', '.gitignore'); /* [3] */
 
 		this.copy('gulpfile.js', 'gulpfile.js');
