@@ -15,5 +15,5 @@
 		"password"   : "",
 		"remotePath" : ""
 	},
-	"miniftyImages" : true
+	"minifyImages" : true
 }

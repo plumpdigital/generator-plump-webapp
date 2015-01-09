@@ -140,7 +140,7 @@ gulp.task('templates', function() {
  */
 gulp.task('images', function() {
 
-	var imagemin = config.minifyImages ? imagemin({
+	var imageminPipe = config.minifyImages ? imagemin({
 		optimizationLevel : 3,
 		progressive : true,
 		interlaced : true
@@ -148,7 +148,7 @@ gulp.task('images', function() {
 
 	return gulp.src(config.files.images) /* [2] */
 		.pipe(newer('dev/images')) /* [3] */
-		.pipe(imagemin)
+		.pipe(imageminPipe)
 		.pipe(gulp.dest('dev/images')) /* [4] */
 		.pipe(gulp.dest('dist/images')); /* [5] */
 
