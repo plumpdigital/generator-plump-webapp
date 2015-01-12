@@ -66,6 +66,7 @@ var plumpModules = [
 	'defaults',
 
 	// Tools
+	'functions',
 	'mixins',
 
 	// Objects
