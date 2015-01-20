@@ -66,6 +66,7 @@ var plumpModules = [
 	'defaults',
 
 	// Tools
+	'functions',
 	'mixins',
 
 	// Objects
@@ -93,10 +94,7 @@ var PlumpGenerator = yeoman.generators.Base.extend({
 		this.pkg = require('../package.json');
 
 		this.on('end', function () {
-			this.log(chalk.magenta.bold('I\'m all done. You now need to run ') +
-					 chalk.green.bold('npm install ') +
-					 chalk.magenta.bold('& ') +
-					 chalk.green.bold('bower install'));
+			this.installDependencies();
 		});
 	},
 
