@@ -37,7 +37,7 @@ var config = require('./gulp-config.json');
 var argv = require('yargs').argv;
 
 /**
- *    Handle pipeline errors to prevent breaking the gulp stream.
+ *    Handle errors in the gulp stream.
  */
 var onError = function (err) {
 	console.log(err);
