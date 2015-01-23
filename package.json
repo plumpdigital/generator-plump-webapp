@@ -1,6 +1,6 @@
 {
   "name": "generator-plump-webapp",
-  "version": "0.9.0",
+  "version": "0.9.6",
   "description": "Plump Yeoman generator for HTML/CSS/JS using Inuit 6 alpha",
   "license": "MIT",
   "repository": "plumpdigital/generator-plump-webapp",
