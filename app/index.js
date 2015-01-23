@@ -151,12 +151,20 @@ var PlumpGenerator = yeoman.generators.Base.extend({
 
 		/* [3] */
 		this.mkdir('src/images');
+		this.mkdir('src/fonts');
 		this.mkdir('src/styles');
+		this.mkdir('src/styles/base');
+		this.mkdir('src/styles/components');
+		this.mkdir('src/styles/generic');
+		this.mkdir('src/styles/objects');
+		this.mkdir('src/styles/settings');
+		this.mkdir('src/styles/tools');
+		this.mkdir('src/styles/trumps');
 		this.mkdir('src/scripts');
 
 		/* [4] */
 		this.template('src/styles/_style.scss', 'src/styles/style.scss');
-		this.template('src/styles/_settings.colors.scss', 'src/styles/_settings.colors.scss');
+		this.template('src/styles/settings/_settings.colors.scss', 'src/styles/settings/_settings.colors.scss');
 
 		/* [5] */
 		this.directory('src/templates', 'src/templates');
