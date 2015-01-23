@@ -90,7 +90,6 @@ gulp.task('scripts', function() {
  * 8. Minify the CSS.
  * 9. Output prefixed, minified CSS to dist/css.
  */
-
 gulp.task('styles', function() {
 
 	return gulp.src(config.files.styles) /* [1] */
@@ -167,7 +166,6 @@ gulp.task('images', function() {
  * 2. Output font files to dev/fonts.
  * 3. Output font files to dist/fonts.
  */
-
 gulp.task('fonts', function() {
 
 	return gulp.src(config.files.fonts) /* [1] */
