@@ -1,7 +1,6 @@
 //    Gulp utility.
 var gulp    = require('gulp'),
-	gutil   = require('gulp-util'),
-	plumber = require('gulp-plumber');
+	gutil   = require('gulp-util');
 
 //    Requires.
 var express     = require('express'),
@@ -17,7 +16,7 @@ var concat       = require('gulp-concat'),
 	jshint       = require('gulp-jshint'),
 	rename       = require('gulp-rename'),
 	swig         = require('gulp-swig'),
-	sass         = require('gulp-ruby-sass'),
+	sass         = require('gulp-sass'),
 	autoprefixer = require('gulp-autoprefixer'),
 	minifycss    = require('gulp-minify-css'),
 	globcss      = require('gulp-css-globbing'),
@@ -35,13 +34,6 @@ var config = require('./gulp-config.json');
  *    Require command-line arguments.
  */
 var argv = require('yargs').argv;
-
-/**
- *    Handle errors in the gulp stream.
- */
-var onError = function (err) {
-	console.log(err);
-};
 
 /**
  *    Constants.
@@ -93,9 +85,11 @@ gulp.task('scripts', function() {
 gulp.task('styles', function() {
 
 	return gulp.src(config.files.styles) /* [1] */
-		.pipe(plumber(onError)) /* [2] */
 		.pipe(globcss({ extensions: ['.scss'] })) /* [3] */
-		.pipe(sass({ style : 'expanded' })) /* [4] */
+		.pipe(sass({  /* [4] */
+			style : 'expanded',
+			errLogToConsole: true
+		}))
 		.pipe(autoprefixer('last 2 versions')) /* [5] */
 		.pipe(gulp.dest('dev/css')) /* [6] */
 		.pipe(rename({ suffix : '.min' })) /* [7] */
@@ -259,11 +253,10 @@ gulp.task('stage', ['build'], function() {
  */
 gulp.task('develop', ['build', 'watch'] /* [1] */, function() {
 
-	var lr = livereload(LIVERELOAD_PORT);
+	var lr = livereload;
+		lr.listen();
 
-	gulp.watch('dev/**/*').on('change', function(file) { /* [3] */
-		lr.changed(file.path);
-	});
+	gulp.watch('dev/**/*').on('change', lr.changed);
 
 	var server = express();
 
@@ -285,7 +278,7 @@ gulp.task('develop', ['build', 'watch'] /* [1] */, function() {
  *    the Gulp callback to runsequence so that the task can complete correctly.
  */
 gulp.task('build', function(callback) {
-	runsequence('clean', ['images', 'fonts', 'templates', 'styles', 'scripts', 'copy'], callback);
+	runsequence('clean', ['images', 'styles', 'fonts', 'templates', 'scripts', 'copy'], callback);
 });
 
 /**
