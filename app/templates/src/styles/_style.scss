@@ -45,11 +45,7 @@
 
 // @import '../../bower_components/inuit-responsive-settings/settings.responsive';
 
-// @import 'settings.colors';
-
-
-
-
+@import 'settings/*';
 
 ///*------------------------------------*\
 //	 #TOOLS
@@ -65,9 +61,7 @@
 
 // @import '../../bower_components/inuit-responsive-tools/tools.responsive';
 
-
-
-
+@import 'tools/*';
 
 ///*------------------------------------*\
 //	 #GENERIC
@@ -81,9 +75,7 @@
 
 // @import '../../bower_components/inuit-shared/generic.shared';
 
-
-
-
+@import 'generic/*';
 
 ///*------------------------------------*\
 //	 #BASE
@@ -99,9 +91,7 @@
 
 // @import '../../bower_components/inuit-paragraphs/base.paragraphs';
 
-
-
-
+@import 'base/*';
 
 ///*------------------------------------*\
 //	 #OBJECTS
@@ -145,17 +135,13 @@
 
 // @import '../../bower_components/plumpcss-wrapper/objects.wrapper';
 
-
-
-
+@import 'objects/*';
 
 ///*------------------------------------*\
 //	 #COMPONENTS
 //\*------------------------------------*/
 
-
-//    Define component-level declarations here.
-
+@import 'components/*';
 
 ///*------------------------------------*\
 //	 #TRUMPS
@@ -178,3 +164,5 @@
 // @import '../../bower_components/inuit-widths/trumps.widths';
 
 // @import '../../bower_components/inuit-widths-responsive/trumps.widths-responsive';
+
+@import 'trumps/*';

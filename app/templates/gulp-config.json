@@ -4,6 +4,7 @@
 		"styles"         : "src/styles/style.scss",
 		"watchStyles"    : "src/styles/**/*.scss",
 		"images"         : "src/images/**/*",
+		"fonts"          : "src/fonts/**/*",
 		"templates"      : "src/*.html",
 		"watchTemplates" : "src/**/*.html",
 		"copy"           : "src/copy/**/*",

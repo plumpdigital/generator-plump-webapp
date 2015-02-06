@@ -1,7 +1,6 @@
 //    Gulp utility.
 var gulp    = require('gulp'),
-	gutil   = require('gulp-util'),
-	plumber = require('gulp-plumber');
+	gutil   = require('gulp-util');
 
 //    Requires.
 var express     = require('express'),
@@ -17,29 +16,28 @@ var concat       = require('gulp-concat'),
 	jshint       = require('gulp-jshint'),
 	rename       = require('gulp-rename'),
 	swig         = require('gulp-swig'),
-	sass         = require('gulp-ruby-sass'),
+	sass         = require('gulp-sass'),
 	autoprefixer = require('gulp-autoprefixer'),
 	minifycss    = require('gulp-minify-css'),
+	globcss      = require('gulp-css-globbing'),
 	imagemin     = require('gulp-imagemin'),
 	newer        = require('gulp-newer'),
 	livereload   = require('gulp-livereload'),
 	ftp          = require('gulp-ftp');
 
-//    Load external config.
+/**
+ *    Require external gulp configuration.
+ */
 var config = require('./gulp-config.json');
 
-//    Load command-line arguments.
+/**
+ *    Require command-line arguments.
+ */
 var argv = require('yargs').argv;
-
-//    Error handler function.
-var onError = function (err) {
-	console.log(err);
-};
 
 /**
  *    Constants.
  */
-
 var DIST_SERVER_PORT 	= 9001;
 var DEV_SERVER_PORT 	= 9000;
 var LIVERELOAD_PORT 	= 35729;
@@ -67,7 +65,6 @@ gulp.task('scripts', function() {
 		.pipe(rename({ suffix : '.min' })) /* [5] */
 		.pipe(uglify()) /* [6] */
 		.pipe(gulp.dest('dist/js')); /* [7] */
-
 });
 
 /**
@@ -77,25 +74,27 @@ gulp.task('scripts', function() {
  *
  * 1. Using all files defined in files.styles config.
  * 2. Catch any errors within the SASS build pipeline.
- * 3. Compile using SASS, expanded style.
- * 4. Auto-prefix (e.g. -moz-) using last 2 browser versions.
- * 5. Output prefixed but non-minifed CSS to dev/css
- * 6. Rename to .min.css
- * 7. Minify the CSS.
- * 8. Output prefixed, minified CSS to dist/css.
+ * 3. Globally collect any SCSS partials and build them.
+ * 4. Compile using SASS, expanded style.
+ * 5. Auto-prefix (e.g. -moz-) using last 2 browser versions.
+ * 6. Output prefixed but non-minifed CSS to dev/css
+ * 7. Rename to .min.css
+ * 8. Minify the CSS.
+ * 9. Output prefixed, minified CSS to dist/css.
  */
-
 gulp.task('styles', function() {
 
 	return gulp.src(config.files.styles) /* [1] */
-		.pipe(plumber(onError)) /* [2] */
-		.pipe(sass({ style : 'expanded' })) /* [3] */
-		.pipe(autoprefixer('last 2 versions')) /* [4] */
-		.pipe(gulp.dest('dev/css')) /* [5] */
-		.pipe(rename({ suffix : '.min' })) /* [6] */
-		.pipe(minifycss()) /* [7] */
-		.pipe(gulp.dest('dist/css')); /* [8] */
-
+		.pipe(globcss({ extensions: ['.scss'] })) /* [3] */
+		.pipe(sass({  /* [4] */
+			style : 'expanded',
+			errLogToConsole: true
+		}))
+		.pipe(autoprefixer('last 2 versions')) /* [5] */
+		.pipe(gulp.dest('dev/css')) /* [6] */
+		.pipe(rename({ suffix : '.min' })) /* [7] */
+		.pipe(minifycss()) /* [8] */
+		.pipe(gulp.dest('dist/css')); /* [9] */
 });
 
 /**
@@ -155,11 +154,27 @@ gulp.task('images', function() {
 });
 
 /**
+ *    Font copy task.
+ *
+ * 1. Using all files defined in files.fonts config.
+ * 2. Output font files to dev/fonts.
+ * 3. Output font files to dist/fonts.
+ */
+gulp.task('fonts', function() {
+
+	return gulp.src(config.files.fonts) /* [1] */
+		.pipe(gulp.dest('dev/fonts')) /* [2] */
+		.pipe(gulp.dest('dist/fonts')); /* [3] */
+});
+
+
+/**
  *    Copy task. Copies over any files that are not part of other tasks
  *    (e.g. HTML pages) to both /dev and /dist
  *    Clean task. Deletes the dev/ and dist/ directories.
  */
 gulp.task('clean', function(callback) {
+
 	return rimraf('./dev', function() {
 		rimraf('./dist', callback)
 	});
@@ -172,6 +187,7 @@ gulp.task('clean', function(callback) {
  * 1. Change the base path to avoid copying top-level directories.
  */
 gulp.task('copy', function() {
+
 	return gulp.src(config.files.copy, { base : config.copyBase }) /* [1] */
 		.pipe(gulp.dest('dev'))
 		.pipe(gulp.dest('dist'));
@@ -189,13 +205,9 @@ gulp.task('copy', function() {
 gulp.task('watch', function() {
 
 	gulp.watch(config.files.watchStyles, ['styles']);	/* [1] */
-
 	gulp.watch(config.files.scripts, ['scripts']); /* [2] */
-
 	gulp.watch(config.files.images, ['images']); /* [3] */
-
 	gulp.watch(config.files.watchTemplates, ['templates']); /* [4] */
-
 });
 
 /**
@@ -207,11 +219,10 @@ gulp.task('watch', function() {
 gulp.task('serve', function() {
 
 	var server = express();
+
 	server.use(express.static(__dirname + '/dist'));
 	server.listen(DIST_SERVER_PORT); /* [1] */
-
 	open('http://localhost:' + DIST_SERVER_PORT); /* [2] */
-
 });
 
 /**
@@ -221,13 +232,12 @@ gulp.task('serve', function() {
 gulp.task('stage', ['build'], function() {
 
 	return gulp.src('dist/**/*')
-		.pipe(ftp({
-			host : config.stage.host,
-			user : config.stage.user,
-			pass : config.stage.password,
-			remotePath : config.stage.remotePath
-		}));
-
+	.pipe(ftp({
+		host : config.stage.host,
+		user : config.stage.user,
+		pass : config.stage.password,
+		remotePath : config.stage.remotePath
+	}));
 });
 
 /**
@@ -243,14 +253,13 @@ gulp.task('stage', ['build'], function() {
  */
 gulp.task('develop', ['build', 'watch'] /* [1] */, function() {
 
-	var lr = livereload(LIVERELOAD_PORT);
+	var lr = livereload;
+		lr.listen();
 
-	gulp.watch('dev/**/*').on('change', function(file) { /* [3] */
-		lr.changed(file.path);
-	});
+	gulp.watch('dev/**/*').on('change', lr.changed);
 
-	//start web server
 	var server = express();
+
 	server.use(require('connect-livereload')({ port : LIVERELOAD_PORT })); /* [4] */
 	server.use(express.static(__dirname + '/dev'));
 	server.listen(DEV_SERVER_PORT); /* [5] */
@@ -269,7 +278,7 @@ gulp.task('develop', ['build', 'watch'] /* [1] */, function() {
  *    the Gulp callback to runsequence so that the task can complete correctly.
  */
 gulp.task('build', function(callback) {
-	runsequence('clean', ['images', 'templates', 'styles', 'scripts', 'copy'], callback);
+	runsequence('clean', ['images', 'styles', 'fonts', 'templates', 'scripts', 'copy'], callback);
 });
 
 /**
