@@ -77,6 +77,7 @@ var plumpModules = [
 	'exhibit',
 	'meter',
 	'stack',
+	'widescreen-frame',
 	'wrapper',
 
 	// Trumps
