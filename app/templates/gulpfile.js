@@ -243,14 +243,12 @@ gulp.task('stage', ['build'], function() {
  */
 gulp.task('develop', ['build', 'watch'] /* [1] */, function() {
 
-	var lr = livereload(LIVERELOAD_PORT);
+	livereload.listen();
 
-	gulp.watch('dev/**/*').on('change', function(file) { /* [3] */
-		lr.changed(file.path);
-	});
+	gulp.watch('dev/**/*').on('change', livereload.changed);
 
-	//start web server
 	var server = express();
+
 	server.use(require('connect-livereload')({ port : LIVERELOAD_PORT })); /* [4] */
 	server.use(express.static(__dirname + '/dev'));
 	server.listen(DEV_SERVER_PORT); /* [5] */
