@@ -1,7 +1,6 @@
 //    Gulp utility.
 var gulp    = require('gulp'),
-	gutil   = require('gulp-util'),
-	plumber = require('gulp-plumber');
+	gutil   = require('gulp-util');
 
 //    Requires.
 var express     = require('express'),
@@ -17,11 +16,12 @@ var concat       = require('gulp-concat'),
 	jshint       = require('gulp-jshint'),
 	rename       = require('gulp-rename'),
 	swig         = require('gulp-swig'),
-	sass         = require('gulp-ruby-sass'),
+	sass         = require('gulp-sass'),
 	autoprefixer = require('gulp-autoprefixer'),
 	minifycss    = require('gulp-minify-css'),
 	imagemin     = require('gulp-imagemin'),
 	newer        = require('gulp-newer'),
+	insert       = require('gulp-insert'),
 	livereload   = require('gulp-livereload'),
 	ftp          = require('gulp-ftp');
 
@@ -31,15 +31,30 @@ var config = require('./gulp-config.json');
 //    Load command-line arguments.
 var argv = require('yargs').argv;
 
-//    Error handler function.
-var onError = function (err) {
-	console.log(err);
-};
+/**
+ *    Make error handling easier by outputting the error message
+ *    directly in to the browser.
+ *
+ * 1. Use the already-built CSS file in the dev directory.
+ * 2. Prepend content in to the CSS file. Use regex to remove
+ *    and new lines & escape single quotes which would break the CSS.
+ * 3. Write the file to the dev/css directory.
+ */
+var injectError = function(err) {
+
+	// Log error as normal.
+	console.log(err.message + ' on Line ' + err.line + ' , Column ' + err.column + '.');
+
+	gulp.src('dev/css/style.css') /* [1] */
+		.pipe(insert.prepend("body:before { content: '" + /* [2] */
+			'Sass Build Error: ' + err.message.replace(/(\r\n|\n|\r)/gm," ").replace(/'/g, "\\'") +
+			' on Line ' + err.line + ', Column ' + err.column + '.' + "'; color: red; font-weight: bold }"))
+		.pipe(gulp.dest('dev/css')) /* [3] */
+}
 
 /**
  *    Constants.
  */
-
 var DIST_SERVER_PORT 	= 9001;
 var DEV_SERVER_PORT 	= 9000;
 var LIVERELOAD_PORT 	= 35729;
@@ -76,25 +91,25 @@ gulp.task('scripts', function() {
  *    dist/ and dev/ respectively.
  *
  * 1. Using all files defined in files.styles config.
- * 2. Catch any errors within the SASS build pipeline.
- * 3. Compile using SASS, expanded style.
- * 4. Auto-prefix (e.g. -moz-) using last 2 browser versions.
- * 5. Output prefixed but non-minifed CSS to dev/css
- * 6. Rename to .min.css
- * 7. Minify the CSS.
- * 8. Output prefixed, minified CSS to dist/css.
+ * 2. Compile using SASS, expanded style.
+ * 3. Auto-prefix (e.g. -moz-) using last 2 browser versions.
+ * 4. Output prefixed but non-minifed CSS to dev/css
+ * 5. Rename to .min.css
+ * 6. Minify the CSS.
+ * 7. Output prefixed, minified CSS to dist/css.
  */
-
 gulp.task('styles', function() {
 
 	return gulp.src(config.files.styles) /* [1] */
-		.pipe(plumber(onError)) /* [2] */
-		.pipe(sass({ style : 'expanded' })) /* [3] */
-		.pipe(autoprefixer('last 2 versions')) /* [4] */
-		.pipe(gulp.dest('dev/css')) /* [5] */
-		.pipe(rename({ suffix : '.min' })) /* [6] */
-		.pipe(minifycss()) /* [7] */
-		.pipe(gulp.dest('dist/css')); /* [8] */
+		.pipe(sass({  /* [2] */
+			style : 'expanded',
+			onError: injectError
+		}))
+		.pipe(autoprefixer('last 2 versions')) /* [3] */
+		.pipe(gulp.dest('dev/css')) /* [4] */
+		.pipe(rename({ suffix : '.min' })) /* [5] */
+		.pipe(minifycss()) /* [6] */
+		.pipe(gulp.dest('dist/css')); /* [7] */
 
 });
 
@@ -243,14 +258,12 @@ gulp.task('stage', ['build'], function() {
  */
 gulp.task('develop', ['build', 'watch'] /* [1] */, function() {
 
-	var lr = livereload(LIVERELOAD_PORT);
+	livereload.listen();
 
-	gulp.watch('dev/**/*').on('change', function(file) { /* [3] */
-		lr.changed(file.path);
-	});
+	gulp.watch('dev/**/*').on('change', livereload.changed);
 
-	//start web server
 	var server = express();
+
 	server.use(require('connect-livereload')({ port : LIVERELOAD_PORT })); /* [4] */
 	server.use(express.static(__dirname + '/dev'));
 	server.listen(DEV_SERVER_PORT); /* [5] */
