@@ -158,7 +158,10 @@ gulp.task('images', function() {
 	var imageminPipe = config.minifyImages ? imagemin({
 		optimizationLevel : 3,
 		progressive : true,
-		interlaced : true
+		interlaced : true,
+		svgoPlugins : [{
+		        removeUnknownsAndDefaults: false
+		}]
 	}) : gutil.noop(); /* [1] */
 
 	return gulp.src(config.files.images) /* [2] */
