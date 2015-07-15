@@ -23,6 +23,7 @@ var concat       = require('gulp-concat'),
 	newer        = require('gulp-newer'),
 	insert       = require('gulp-insert'),
 	livereload   = require('gulp-livereload'),
+	scsslint     = require('gulp-scss-lint'),
 	ftp          = require('gulp-ftp');
 
 //    Load external config.
@@ -101,6 +102,9 @@ gulp.task('scripts', function() {
 gulp.task('styles', function() {
 
 	return gulp.src(config.files.styles) /* [1] */
+		.pipe(scsslint({
+		    'config': '.scss-lint.yml'
+		}))
 		.pipe(sass({  /* [2] */
 			style : 'expanded',
 			onError: injectError
@@ -145,7 +149,7 @@ gulp.task('templates', function() {
 });
 
 /**
- *    Image optimsation task.
+ *    Image optimisation task.
  *
  * 1. Determine whether to use imagemin or do nothing (noop).
  * 2. Use files defined in files.images config.
