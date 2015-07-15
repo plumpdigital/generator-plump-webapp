@@ -174,13 +174,14 @@ var PlumpGenerator = yeoman.generators.Base.extend({
 	 * 1. Editor config (http://editorconfig.org/)
 	 * 2. JSHint config (http://www.jshint.com/docs/)
 	 * 3. Basic .gitignore to ignore NPM and Bower components.
+	 * 4. Scss lint config (https://github.com/brigade/scss-lint/tree/master/config).
 	 */
 	 projectfiles: function () {
 		this.copy('editorconfig', '.editorconfig'); /* [1] */
 		this.copy('jshintrc', '.jshintrc'); /* [2] */
 		this.copy('jshintignore', '.jshintignore'); /* [2] */
 		this.copy('gitignore', '.gitignore'); /* [3] */
-
+		this.copy('scss-lint', '.scss-lint.yml'); /* [4} */
 		this.copy('gulpfile.js', 'gulpfile.js');
 		this.copy('gulp-config.json', 'gulp-config.json');
 	},
