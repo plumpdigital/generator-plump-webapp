@@ -237,10 +237,9 @@ gulp.task('serve', function() {
 });
 
 /**
- *    Stage task. Builds then uploads the contents of dist/ to an FTP site
- *    using values from stage config.
+ * Uploads the /dist directory using values from the stage config.
  */
-gulp.task('stage', function() {
+gulp.task('ftp', function() {
 
 	// Create FTP connection.
 	var connection = ftp.create({
@@ -255,6 +254,12 @@ gulp.task('stage', function() {
 		.pipe(connection.newer(config.stage.remotePath))
 		.pipe(connection.dest(config.stage.remotePath))
 });
+
+/**
+ *    Stage task. Builds then uploads the contents of dist/ to an FTP site
+ *    using values from stage config.
+ */
+gulp.task('stage', ['build', 'ftp']);
 
 /**
  *    Develop task. Sets up watches and serves up /dev using
