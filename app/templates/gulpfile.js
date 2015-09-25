@@ -8,7 +8,8 @@ var express     = require('express'),
 	rimraf      = require('rimraf'),
 	merge       = require('merge-stream'),
 	runsequence = require('run-sequence'),
-	stylish     = require('jshint-stylish');
+	stylish     = require('jshint-stylish'),
+	ftp         = require('vinyl-ftp');
 
 //    Plugin requires.
 var concat       = require('gulp-concat'),
@@ -23,8 +24,7 @@ var concat       = require('gulp-concat'),
 	newer        = require('gulp-newer'),
 	insert       = require('gulp-insert'),
 	livereload   = require('gulp-livereload'),
-	scsslint     = require('gulp-scss-lint'),
-	ftp          = require('gulp-ftp');
+	scsslint     = require('gulp-scss-lint');
 
 //    Load external config.
 var config = require('./gulp-config.json');
@@ -240,16 +240,20 @@ gulp.task('serve', function() {
  *    Stage task. Builds then uploads the contents of dist/ to an FTP site
  *    using values from stage config.
  */
-gulp.task('stage', ['build'], function() {
+gulp.task('stage', function() {
 
-	return gulp.src('dist/**/*')
-		.pipe(ftp({
-			host : config.stage.host,
-			user : config.stage.user,
-			pass : config.stage.password,
-			remotePath : config.stage.remotePath
-		}));
+	// Create FTP connection.
+	var connection = ftp.create({
+		host: config.stage.host,
+		user: config.stage.user,
+		password: config.stage.password,
+		parallel: 20,
+		log: gutil.log
+	});
 
+	return gulp.src('dist/**/*', { buffer: false })
+		.pipe(connection.newer(config.stage.remotePath))
+		.pipe(connection.dest(config.stage.remotePath))
 });
 
 /**
