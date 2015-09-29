@@ -106,7 +106,10 @@ gulp.task('styles', function() {
 		    'config': '.scss-lint.yml'
 		}))
 		.pipe(sass({  /* [2] */
-			style : 'expanded',
+			indentedSyntax: true,
+			indentType: 'tab',
+			indentWidth: 1,
+			outputStyle : 'expanded',
 			onError: injectError
 		}))
 		.pipe(autoprefixer('last 2 versions')) /* [3] */
